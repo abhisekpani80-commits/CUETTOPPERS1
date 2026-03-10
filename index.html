@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#003580">
+  <meta name="theme-color" content="#003087">
+
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+  <title>CUET TEST — Login | NTA CBT Practice Portal</title>
+  <meta name="description"
+    content="Login to the CUET UG 2025 Mock Test Portal. Practice with NTA-authentic CBT interface. Free and Premium mock tests available.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.svg">
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="login.css">
+</head>
+
+<body>
+
+  <!-- Mobile Warning -->
+  <div class="mobile-warning" id="mobileWarn">
+    <div class="icon">🖥️</div>
+    <h2>Desktop Recommended</h2>
+    <p>The CUET CBT interface is optimized for desktop/laptop screens (1024px+). For the best experience, please use a
+      computer or tablet in landscape mode.</p>
+    <button class="btn btn-saffron" onclick="document.getElementById('mobileWarn').style.display='none'"
+      style="margin-top:12px">Continue Anyway</button>
+  </div>
+
+  <!-- Tricolor Bar -->
+  <div class="tricolor-bar"></div>
+
+  <!-- Header -->
+  <header class="login-header">
+    <div class="header-brand">
+      <div class="nta-emblem">NTA</div>
+      <div class="header-title">
+        <h1>National Testing Agency</h1>
+        <p>CUET TEST</p>
+      </div>
+    </div>
+    <div class="lang-toggle-header">
+      <button class="lang-btn active" id="langEn" onclick="setLang('en')">English</button>
+      <button class="lang-btn" id="langHi" onclick="setLang('hi')">हिंदी</button>
+    </div>
+  </header>
+
+  <!-- Main Login -->
+  <main class="login-main">
+    <div class="login-card" role="main">
+      <div class="login-card-header">
+        <div class="cuet-logo">CUET TEST</div>
+        <div class="cuet-sub" id="loginHeaderSub">CANDIDATE LOGIN — CUET TEST PORTAL</div>
+      </div>
+
+      <div class="login-card-body">
+        <h2 id="loginTitle">🔐 Sign In to Your Account</h2>
+
+        <!-- Error Banner -->
+        <div class="login-error" id="loginError" role="alert" aria-live="polite">
+          <span>⚠️</span>
+          <span id="loginErrorMsg"></span>
+        </div>
+
+        <form id="loginForm" novalidate>
+          <!-- Roll Number -->
+          <div class="form-group">
+            <label class="form-label" for="rollNumber" id="labelRoll">Roll Number / Candidate ID</label>
+            <div class="input-icon-wrap">
+              <span class="icon">🎓</span>
+              <input type="text" class="form-control" id="rollNumber" name="rollNumber" placeholder="e.g., CUET2025001"
+                autocomplete="username" aria-label="Roll Number" required>
+            </div>
+          </div>
+
+          <!-- Date of Birth -->
+          <div class="form-group">
+            <label class="form-label" id="labelDOB">Date of Birth (DD / MM / YYYY)</label>
+            <div class="dob-wrap">
+              <input type="text" class="form-control" id="dobDD" placeholder="DD" maxlength="2"
+                aria-label="Day of birth" pattern="[0-9]{2}" inputmode="numeric">
+              <input type="text" class="form-control" id="dobMM" placeholder="MM" maxlength="2"
+                aria-label="Month of birth" pattern="[0-9]{2}" inputmode="numeric">
+              <input type="text" class="form-control" id="dobYYYY" placeholder="YYYY" maxlength="4"
+                aria-label="Year of birth" pattern="[0-9]{4}" inputmode="numeric">
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label class="form-label" for="password" id="labelPass">Password</label>
+            <div class="input-icon-wrap">
+              <span class="icon">🔒</span>
+              <input type="password" class="form-control" id="password" name="password"
+                placeholder="Enter your password" autocomplete="current-password" aria-label="Password" required>
+              <button type="button" class="eye-toggle" id="eyeToggle" aria-label="Toggle password visibility"
+                onclick="togglePassword()">👁️</button>
+            </div>
+            <div class="forgot-link"><a href="#" onclick="showForgot(event)" id="forgotLink">Forgot Password?</a></div>
+          </div>
+
+          <!-- Terms -->
+          <div class="terms-check">
+            <input type="checkbox" id="termsCheck" aria-required="true">
+            <label for="termsCheck" id="termsLabel">
+              I have read and accept the <a href="#" onclick="event.preventDefault()">Terms & Conditions</a>.
+              I agree not to use any unfair means during the examination.
+            </label>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="btn-login" id="loginBtn" disabled>
+            <span id="loginBtnText">SIGN IN</span>
+          </button>
+        </form>
+
+        <!-- Demo Credentials -->
+        <div class="demo-box">
+          <strong>🧪 Demo Credentials (for Testing)</strong>
+          Roll No: <code>CUET2025001</code> &nbsp;|&nbsp;
+          DOB: <code>01 / 01 / 2000</code> &nbsp;|&nbsp;
+          Password: <code>test123</code>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="login-footer">
+    <p>
+      <strong style="color:rgba(255,153,51,0.9)">⚠️ UNOFFICIAL MOCK TEST PLATFORM</strong> —
+      Created solely for practice and educational purposes. Not affiliated with NTA, Ministry of Education, or any
+      University.<br>
+      For official CUET registration: <a href="https://cuet.nta.nic.in" target="_blank">cuet.nta.nic.in</a> |
+      <a href="https://nta.ac.in" target="_blank">nta.ac.in</a> &nbsp;|&nbsp;
+      <a href="https://wa.me/919556436685?text=Hi%2C+I+need+help+with+the+mock+test" target="_blank" rel="noopener"
+        style="color:#25D366">
+        📲 WhatsApp Support: +91 9556436685
+      </a>
+    </p>
+    <p class="nic-credit">Designed and developed for CUET practice | Powered by Modern Web Technologies</p>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <script src="utils.js"></script>
+  <script>
+    // ─── LANGUAGE TOGGLE ────────────────────────────────────────────────────
+    const LANG = {
+      en: {
+        loginHeaderSub: 'CANDIDATE LOGIN — CUET TEST PORTAL',
+        loginTitle: '🔐 Sign In to Your Account',
+        labelRoll: 'Roll Number / Candidate ID',
+        labelDOB: 'Date of Birth (DD / MM / YYYY)',
+        labelPass: 'Password',
+        termsLabel: 'I have read and accept the Terms & Conditions. I agree not to use any unfair means during the examination.',
+        loginBtnText: 'SIGN IN',
+        forgotLink: 'Forgot Password?',
+      },
+      hi: {
+        loginHeaderSub: 'उम्मीदवार लॉगिन — CUET TEST पोर्टल',
+        loginTitle: '🔐 अपने खाते में साइन इन करें',
+        labelRoll: 'रोल नंबर / उम्मीदवार आईडी',
+        labelDOB: 'जन्म तिथि (DD / MM / YYYY)',
+        labelPass: 'पासवर्ड',
+        termsLabel: 'मैंने नियम व शर्तें पढ़ी और स्वीकार की हैं। मैं परीक्षा में अनुचित साधनों का उपयोग न करने के लिए सहमत हूँ।',
+        loginBtnText: 'साइन इन करें',
+        forgotLink: 'पासवर्ड भूल गए?',
+      }
+    };
+
+    function setLang(lang) {
+      document.getElementById('langEn').classList.toggle('active', lang === 'en');
+      document.getElementById('langHi').classList.toggle('active', lang === 'hi');
+      document.body.classList.toggle('hindi-mode', lang === 'hi');
+      const t = LANG[lang];
+      Object.keys(t).forEach(key => {
+        const el = document.getElementById(key);
+        if (el) el.textContent = t[key];
+      });
+      Store.set('lang', lang);
+    }
+
+    // ─── TERMS CHECK → ENABLE LOGIN BUTTON ─────────────────────────────────
+    document.getElementById('termsCheck').addEventListener('change', function () {
+      document.getElementById('loginBtn').disabled = !this.checked;
+    });
+
+    // ─── DOB AUTO-ADVANCE ───────────────────────────────────────────────────
+    document.getElementById('dobDD').addEventListener('input', function () {
+      if (this.value.length >= 2) document.getElementById('dobMM').focus();
+    });
+    document.getElementById('dobMM').addEventListener('input', function () {
+      if (this.value.length >= 2) document.getElementById('dobYYYY').focus();
+    });
+
+    // ─── PASSWORD TOGGLE ─────────────────────────────────────────────────────
+    function togglePassword() {
+      const p = document.getElementById('password');
+      const btn = document.getElementById('eyeToggle');
+      p.type = p.type === 'password' ? 'text' : 'password';
+      btn.textContent = p.type === 'password' ? '👁️' : '🙈';
+    }
+
+    // ─── FORGOT PASSWORD ─────────────────────────────────────────────────────
+    function showForgot(e) {
+      e.preventDefault();
+      alert('🔑 Forgot Password?\n\nPlease WhatsApp us at +91 9556436685 with your Roll Number to reset your password.\n\nFor demo: Password is test123');
+    }
+
+    // ─── LOGIN LOGIC ──────────────────────────────────────────────────────────
+    let loginAttempts = Store.get('loginAttempts', 0);
+
+    function showError(msg) {
+      const err = document.getElementById('loginError');
+      document.getElementById('loginErrorMsg').textContent = msg;
+      err.classList.add('show');
+    }
+    function hideError() {
+      document.getElementById('loginError').classList.remove('show');
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      hideError();
+
+      if (loginAttempts >= 3) {
+        showError('❌ Account temporarily locked after 3 failed attempts. Please try again after 15 minutes or contact support.');
+        return;
+      }
+
+      const rollNumber = document.getElementById('rollNumber').value.trim().toUpperCase();
+      const dd = document.getElementById('dobDD').value.trim().padStart(2, '0');
+      const mm = document.getElementById('dobMM').value.trim().padStart(2, '0');
+      const yyyy = document.getElementById('dobYYYY').value.trim();
+      const dob = `${dd}/${mm}/${yyyy}`;
+      const password = document.getElementById('password').value;
+
+      // Validation
+      if (!rollNumber) { showError('Please enter your Roll Number.'); return; }
+      if (!dd || !mm || !yyyy || yyyy.length < 4) { showError('Please enter a valid Date of Birth.'); return; }
+      if (!password) { showError('Please enter your Password.'); return; }
+
+      // Show loading
+      const btn = document.getElementById('loginBtn');
+      btn.disabled = true;
+      document.getElementById('loginBtnText').innerHTML = '<span class="spinner"></span> Verifying...';
+
+      setTimeout(() => {
+        const user = getUserByRoll(rollNumber);
+        if (!user || user.dob !== dob || user.password !== password) {
+          loginAttempts++;
+          Store.set('loginAttempts', loginAttempts);
+          const remaining = 3 - loginAttempts;
+          if (remaining <= 0) {
+            showError('❌ Account locked after 3 failed attempts. Contact WhatsApp support: +91 9556436685');
+          } else {
+            showError(`❌ Invalid credentials. ${remaining} attempt(s) remaining before account lock.`);
+          }
+          btn.disabled = false;
+          document.getElementById('loginBtnText').textContent = 'SIGN IN';
+          return;
+        }
+
+        // SUCCESS
+        Store.set('loginAttempts', 0);
+        setCurrentUser(user);
+
+        // Phase 8: Log Activity (Firebase)
+        logUserActivity('LOGIN');
+
+        // First time → instructions, else dashboard
+        const seenInstructions = Store.get(`seen_instructions_${user.rollNumber}`, false);
+        window.location.href = seenInstructions ? 'dashboard.html' : 'instructions.html';
+      }, 800);
+    });
+
+    // ─── INIT ─────────────────────────────────────────────────────────────────
+    window.addEventListener('DOMContentLoaded', () => {
+      // If already logged in, redirect
+      const user = getCurrentUser();
+      if (user) { window.location.href = 'dashboard.html'; }
+
+      // Restore language
+      const lang = Store.get('lang', 'en');
+      if (lang === 'hi') setLang('hi');
+    });
+  </script>
+</body>
+
+</html>

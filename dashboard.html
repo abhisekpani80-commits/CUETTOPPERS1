@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#003087">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  
+    <title>Test Dashboard — CUET TEST</title>
+    <link rel="stylesheet" href="base.css">
+    <style>
+        body {
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ─── */
+        .dash-header {
+            background: var(--nta-navy);
+            color: #fff;
+            padding: 12px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .nta-logo-sm {
+            background: #fff;
+            color: var(--nta-navy);
+            font-weight: 900;
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 3px;
+        }
+
+        .header-title h1 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .header-title p {
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .candidate-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 5px 14px 5px 5px;
+        }
+
+        .cand-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #1a4ba0;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .cand-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .cand-roll {
+            font-size: 10px;
+            opacity: 0.7;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-primary);
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ─── BANNER ─── */
+        .free-banner {
+            background: linear-gradient(135deg, #2E7D32, #388E3C);
+            color: #fff;
+            text-align: center;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* ─── MAIN CONTENT ─── */
+        .dash-main {
+            flex: 1;
+            max-width: 980px;
+            margin: 28px auto;
+            width: 95%;
+        }
+
+        .dash-main h2 {
+            font-size: 18px;
+            color: var(--nta-navy);
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .dash-sub {
+            font-size: 13px;
+            color: #757575;
+            margin-bottom: 20px;
+        }
+
+        /* ─── TEST CARDS ─── */
+        .test-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .test-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+            border: 1.5px solid var(--divider);
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .test-card:hover {
+            box-shadow: var(--shadow-md);
+            border-color: #9EC0FF;
+        }
+
+        .test-card.free-card {
+            border-color: #A5D6A7;
+        }
+
+        .test-card.locked-card {
+            border-color: #CE93D8;
+            opacity: 0.92;
+        }
+
+        .test-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+            width: 52px;
+            text-align: center;
+        }
+
+        .test-info {
+            flex: 1;
+        }
+
+        .test-info .test-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--nta-navy);
+            margin-bottom: 4px;
+        }
+
+        .test-info .test-meta {
+            font-size: 12px;
+            color: #616161;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .test-meta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .test-stats {
+            font-size: 12px;
+            margin-top: 8px;
+            color: #424242;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .test-stats .stat {
+            background: #F5F5F5;
+            padding: 2px 10px;
+            border-radius: 10px;
+        }
+
+        .test-action {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .test-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--btn-clear);
+        }
+
+        .btn-start {
+            background: var(--btn-save);
+            color: #fff;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+            font-family: var(--font-primary);
+        }
+
+        .btn-start:hover {
+            background: #1b5e20;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+        }
+
+        .btn-unlock {
+            background: var(--btn-mark);
+            color: #fff;
+            border: none;
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: var(--font-primary);
+            white-space: nowrap;
+        }
+
+        .btn-unlock:hover {
+            background: #4a0072;
+        }
+
+        /* ─── WA STRIP ─── */
+        .wa-strip {
+            background: #F9F9F9;
+            border: 1px solid var(--divider);
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: #424242;
+        }
+
+        .wa-btn {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: var(--font-primary);
+        }
+
+        /* ─── ATTEMPT HISTORY ─── */
+        .history-section {
+            margin-top: 28px;
+        }
+
+        .history-section h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--nta-navy);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--divider);
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            font-size: 13px;
+        }
+
+        .history-table th {
+            background: var(--nta-navy);
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .history-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--divider);
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .history-table tr:hover td {
+            background: #F8F9FF;
+        }
+
+        .score-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .score-high {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .score-mid {
+            background: #FFF8E1;
+            color: #E65100;
+        }
+
+        .score-low {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
+        /* Pricing Table */
+        .pricing-section {
+            background: #fff;
+            border: 1px solid var(--divider);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .price-card {
+            border: 1px solid var(--divider);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.2s;
+            background: #FAFAFA;
+        }
+
+        .price-card:hover {
+            border-color: var(--nta-navy);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .price-card.popular {
+            border: 2px solid var(--nta-saffron);
+            background: #FFFBF0;
+        }
+
+        .price-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--nta-navy);
+            margin-bottom: 5px;
+        }
+
+        .price-val {
+            font-size: 20px;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+
+        .price-features {
+            font-size: 11px;
+            color: #666;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .price-btn {
+            width: 100%;
+            padding: 6px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .wa-contact-bar {
+            background: #E8F5E9;
+            border: 1px solid #A5D6A7;
+            border-radius: 8px;
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            color: #1B5E20;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        #unlockModal .plans-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .modal-plan-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border: 1px solid var(--divider);
+            border-radius: 8px;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .modal-plan-btn:hover {
+            border-color: var(--nta-navy);
+            background: #F8F9FF;
+        }
+
+        .modal-plan-btn b {
+            color: var(--nta-navy);
+            font-size: 14px;
+        }
+
+        .modal-plan-btn span {
+            font-size: 14px;
+            font-weight: 800;
+            color: #d32f2f;
+        }
+
+        .modal-plan-btn small {
+            display: block;
+            font-size: 11px;
+            color: #666;
+            font-weight: 400;
+        }
+
+        /* ─── UNLOCK MODAL ─── */
+        .lock-modal-body {
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .lock-modal-body .test-price-large {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--btn-clear);
+            text-align: center;
+            margin: 12px 0;
+        }
+
+        .lock-modal-body .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0;
+        }
+
+        .lock-modal-body .feature-list li {
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #333;
+        }
+
+        .lock-modal-body .wa-info {
+            background: #F0FFF4;
+            border: 1px solid #A5D6A7;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 14px 0;
+        }
+
+        .lock-modal-body .wa-number {
+            font-size: 16px;
+            font-weight: 700;
+            color: #25D366;
+        }
+
+        /* ─── CODE MODAL ─── */
+        .code-boxes {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            margin: 16px 0;
+            flex-wrap: wrap;
+        }
+
+        .code-input-main {
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            padding: 10px 16px;
+            border: 2px solid #9E9E9E;
+            border-radius: 6px;
+            letter-spacing: 4px;
+            width: 100%;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+        }
+
+        .code-input-main:focus {
+            border-color: var(--nta-navy);
+            outline: none;
+        }
+
+        .code-timer {
+            font-size: 13px;
+            color: #E65100;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="tricolor-bar"></div>
+
+    <!-- Header -->
+    <header class="dash-header">
+        <div class="header-left">
+            <div class="nta-logo-sm">NTA</div>
+            <div class="header-title">
+                <h1>CUET TEST | Mock Test Series</h1>
+                <p>Computer Based Test Practice Portal</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="candidate-chip">
+                <div class="cand-avatar" id="candAvatar">—</div>
+                <div>
+                    <div class="cand-name" id="candName">Loading...</div>
+                    <div class="cand-roll" id="candRoll"></div>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="logout()">⬅ Logout</button>
+        </div>
+    </header>
+
+    <!-- Free Banner -->
+    <div class="free-banner">
+        🎁 Mock Test 1 is <strong>completely FREE</strong>! Start now — no payment needed. &nbsp;|&nbsp; Unlimited
+        reattempts available.
+    </div>
+
+    <!-- Main -->
+    <main class="dash-main">
+        <div style="display: grid; grid-template-columns: 1fr 300px; gap: 25px;">
+            <div class="dash-left">
+                <h2>📚 CUET TEST Series</h2>
+                <p class="dash-sub" id="dashWelcome">Welcome back! Choose a test to begin your preparation.</p>
+
+                <!-- Pricing Section -->
+                <section class="pricing-section">
+                    <h3 style="font-size: 16px; margin-bottom: 8px;">💎 Membership Plans & Pricing</h3>
+                    <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Choose a plan to unlock premium CUET
+                        mock
+                        tests and elite AI analysis.</p>
+
+                    <div class="pricing-grid">
+                        <div class="price-card">
+                            <div class="price-name">Free Test</div>
+                            <div class="price-val">₹0</div>
+                            <div class="price-features">Mock Test 1 only<br>Unlimited reattempts</div>
+                            <button class="btn btn-outline price-btn" disabled>Current Pack</button>
+                        </div>
+                        <div class="price-card">
+                            <div class="price-name">Single Test</div>
+                            <div class="price-val">₹49</div>
+                            <div class="price-features">One specific test<br>Lifetime access</div>
+                            <a href="https://wa.me/919556436685?text=Hi, I want to buy a Single Test for ₹49"
+                                target="_blank" class="btn btn-primary price-btn">Buy Now</a>
+                        </div>
+                        <div class="price-card">
+                            <div class="price-name">Subject Pack</div>
+                            <div class="price-val">₹149</div>
+                            <div class="price-features">All tests of one subject<br>(e.g. Physics Pack)</div>
+                            <a href="https://wa.me/919556436685?text=Hi, I want to buy a Subject Pack for ₹149"
+                                target="_blank" class="btn btn-primary price-btn">Buy Now</a>
+                        </div>
+                        <div class="price-card popular">
+                            <div class="price-name">Full Series Pass</div>
+                            <div class="price-val">₹399</div>
+                            <div class="price-features">Every test, every subject<br>Lifetime access</div>
+                            <a href="https://wa.me/919556436685?text=Hi, I want to buy the Full Series Pass for ₹399"
+                                target="_blank" class="btn btn-saffron price-btn">Buy Full Pass</a>
+                        </div>
+                        <div class="price-card">
+                            <div class="price-name">Weekly Pass</div>
+                            <div class="price-val">₹99 <small>/week</small></div>
+                            <div class="price-features">Everything unlocked<br>Valid for 7 Days</div>
+                            <a href="https://wa.me/919556436685?text=Hi, I want to buy the Weekly Pass for ₹99/week"
+                                target="_blank" class="btn btn-primary price-btn">Subscribe</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- WhatsApp Combos Bar -->
+                <div class="wa-contact-bar" style="margin-bottom: 25px;">
+                    <span style="font-size: 20px;">💬</span>
+                    <div>
+                        For all subject combinations and many more, <b>message us on WhatsApp what you need more.</b> We
+                        provide custom packs tailored to your CUET requirements.
+                        <a href="https://wa.me/919556436685?text=Hi, I need a custom subject combination pack"
+                            target="_blank" style="color:#2E7D32; margin-left:10px; text-decoration:underline;">Chat
+                            with
+                            us</a>
+                    </div>
+                </div>
+
+                <!-- Test List Section -->
+                <div class="test-grid" id="testGrid">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- WA Strip -->
+                <div class="wa-strip">
+                    <span>📲</span>
+                    <div style="flex:1;">
+                        To unlock any test, WhatsApp us at <strong>+91 9556436685</strong> and send the test name.
+                        You'll
+                        receive a secure unlock code within minutes.
+                    </div>
+                    <a class="wa-btn" href="https://wa.me/919556436685?text=Hi%2C+I+want+to+unlock+a+CUET+mock+test"
+                        target="_blank" rel="noopener">
+                        <span>💬</span> Chat on WhatsApp
+                    </a>
+                </div>
+
+                <!-- Attempt History -->
+                <div class="history-section">
+                    <h3>📊 My Attempt History</h3>
+                    <div id="historyContainer">
+                        <table class="history-table" id="historyTable" style="display:none;">
+                            <thead>
+                                <tr>
+                                    <th>Test</th>
+                                    <th>Attempt</th>
+                                    <th>Date</th>
+                                    <th>Score</th>
+                                    <th>Net Score</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyBody"></tbody>
+                        </table>
+                        <div class="no-history" id="noHistory">
+                            📋 No attempts yet. Start <strong>Mock Test 1 (Free)</strong> to begin!
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+
+        <aside class="dash-right">
+            <!-- Phase 8: Live Leaderboard -->
+            <div class="pricing-section"
+                style="padding: 15px; position: sticky; top: 20px; box-shadow: var(--shadow-sm); border: 1px solid #e0e0e0;">
+                <h3 style="font-size: 14px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                    🏆 Live Global Rankings
+                    <span class="badge badge-free" style="padding: 2px 6px; font-size: 9px;">LIVE</span>
+                </h3>
+                <div id="liveLeaderboard" style="font-size: 11px;">
+                    <div style="text-align:center; color:#999; padding: 20px;">Loading real-time rankings...</div>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+
+                <div style="font-weight: 700; color: #1B5E20; margin-bottom: 8px; font-size: 12px;">📢 Need Help?
+                </div>
+                <div style="font-size: 11px; margin-bottom: 10px; color: #666;">Connect with our specialists for
+                    custom combos.</div>
+                <a href="https://wa.me/919556436685" class="wa-btn"
+                    style="width: 100%; justify-content: center; font-size: 11px;">Chat Now</a>
+            </div>
+        </aside>
+        </div>
+    </main>
+
+    <!-- Test List Section -->
+    <div class="test-grid" id="testGrid">
+        <!-- Populated by JS -->
+    </div>
+
+    <!-- WA Strip -->
+    <div class="wa-strip">
+        <span>📲</span>
+        <div style="flex:1;">
+            To unlock any test, WhatsApp us at <strong>+91 9556436685</strong> and send the test name. You'll
+            receive a secure unlock code within minutes.
+        </div>
+        <a class="wa-btn" href="https://wa.me/919556436685?text=Hi%2C+I+want+to+unlock+a+CUET+mock+test" target="_blank"
+            rel="noopener">
+            <span>💬</span> Chat on WhatsApp
+        </a>
+    </div>
+
+    <!-- Attempt History -->
+    <div class="history-section">
+        <h3>📊 My Attempt History</h3>
+        <div id="historyContainer">
+            <table class="history-table" id="historyTable" style="display:none;">
+                <thead>
+                    <tr>
+                        <th>Test</th>
+                        <th>Attempt</th>
+                        <th>Date</th>
+                        <th>Score</th>
+                        <th>Net Score</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+            </table>
+            <div class="no-history" id="noHistory">
+                📋 No attempts yet. Start <strong>Mock Test 1 (Free)</strong> to begin!
+            </div>
+        </div>
+    </div>
+    </main>
+
+    <!-- Locked Test Modal -->
+    <div class="modal-overlay" id="lockModal">
+        <div class="modal-box" style="max-width:480px;">
+            <div class="modal-title">🔒 PREMIUM TEST</div>
+            <div class="modal-body">
+                <p style="font-size:13px; color:#444; margin-bottom:15px;">
+                    This is a **Premium Mock Test**. To unlock it, please choose a plan below or enter your 16-digit
+                    unlock code.
+                </p>
+
+                <h4 style="font-size:12px; color:var(--nta-navy); text-transform:uppercase; letter-spacing:0.5px;">1.
+                    Choose a Plan</h4>
+                <div class="plans-list">
+                    <a id="planSingleLink" target="_blank" class="modal-plan-btn">
+                        <div>
+                            <b>Single Test</b>
+                            <small>Unlock only this specific test forever</small>
+                        </div>
+                        <span>₹49</span>
+                    </a>
+                    <a id="planSubjectLink" target="_blank" class="modal-plan-btn">
+                        <div>
+                            <b>Subject Pack</b>
+                            <small id="planSubjectText">Unlock ALL General Test mocks</small>
+                        </div>
+                        <span>₹149</span>
+                    </a>
+                    <a href="https://wa.me/919556436685?text=Hi, I want to buy the Full Series Pass for ₹399"
+                        target="_blank" class="modal-plan-btn">
+                        <div>
+                            <b>Full Series Pass</b>
+                            <small>Unlimited access to every single mock test</small>
+                        </div>
+                        <span>₹399</span>
+                    </a>
+                </div>
+
+                <div style="margin: 20px 0; display: flex; align-items: center; gap: 10px;">
+                    <hr style="flex:1; border:0; border-top:1px solid #eee;">
+                    <span style="font-size:11px; color:#999; font-weight:700;">OR</span>
+                    <hr style="flex:1; border:0; border-top:1px solid #eee;">
+                </div>
+
+                <h4 style="font-size:12px; color:var(--nta-navy); text-transform:uppercase; letter-spacing:0.5px;">2.
+                    Enter Unlock Code</h4>
+                <div style="font-size:13px;color:#424242;margin-bottom:12px;">
+                    Enter the unlock code sent to you on WhatsApp after payment:
+                </div>
+                <input type="text" class="code-input-main" id="codeInput" placeholder="CUET-XXXX-XXXX" maxlength="14"
+                    aria-label="Unlock code">
+                <div id="codeError" class="form-error" style="text-align:center;margin-bottom:8px;display:none;"></div>
+                <div id="codeSuccess"
+                    style="text-align:center;color:#2E7D32;font-weight:700;font-size:13px;display:none;">
+                </div>
+
+                <div style="font-size:11px;color:#9E9E9E;text-align:center;margin:8px 0;">
+                    ⚠️ Code is valid for 1 account only. Sharing it will invalidate it instantly.
+                </div>
+                <div style="display:flex;gap:10px;margin-top:8px;">
+                    <button class="btn btn-primary w-100" onclick="redeemCode()">✅ Unlock Test</button>
+                    <button class="btn btn-back" onclick="closeLockModal()">✕</button>
+                </div>
+                <div style="text-align:center;margin-top:12px;font-size:12px;color:#9E9E9E;">
+                    Didn't receive your code? &nbsp;
+                    <a href="https://wa.me/919556436685?text=I+did+not+receive+my+unlock+code" target="_blank"
+                        style="color:#25D366;font-weight:600;">💬 WhatsApp +91 9556436685</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unlock Code Modal -->
+    <div class="modal-overlay" id="codeModal" style="display:none;">
+        <div class="modal-box" style="max-width:420px;">
+            <div class="modal-title">🔑 Enter Your Unlock Code</div>
+            <div style="font-size:13px;color:#424242;margin-bottom:12px;">
+                Enter the unlock code sent to you on WhatsApp after payment:
+            </div>
+            <input type="text" class="code-input-main" id="codeInput" placeholder="CUET-XXXX-XXXX" maxlength="14"
+                aria-label="Unlock code">
+            <div id="codeError" class="form-error" style="text-align:center;margin-bottom:8px;display:none;"></div>
+            <div id="codeSuccess" style="text-align:center;color:#2E7D32;font-weight:700;font-size:13px;display:none;">
+            </div>
+
+            <div style="font-size:11px;color:#9E9E9E;text-align:center;margin:8px 0;">
+                ⚠️ Code is valid for 1 account only. Sharing it will invalidate it instantly.
+            </div>
+            <div style="display:flex;gap:10px;margin-top:8px;">
+                <button class="btn btn-primary w-100" onclick="redeemCode()">✅ Unlock Test</button>
+                <button class="btn btn-back" onclick="closeCodeModal()">✕</button>
+            </div>
+            <div style="text-align:center;margin-top:12px;font-size:12px;color:#9E9E9E;">
+                Didn't receive your code? &nbsp;
+                <a href="https://wa.me/919556436685?text=I+did+not+receive+my+unlock+code" target="_blank"
+                    style="color:#25D366;font-weight:600;">💬 WhatsApp +91 9556436685</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="nta-footer">
+        ⚠️ <strong>UNOFFICIAL MOCK TEST PLATFORM</strong> — Scores hold NO official academic value. Not affiliated with
+        NTA. &nbsp;|&nbsp;
+        Official site: <a href="https://cuet.nta.nic.in" target="_blank">cuet.nta.nic.in</a> &nbsp;|&nbsp;
+        <a href="https://wa.me/919556436685?text=Hi%2C+I+need+help" target="_blank" style="color:#25D366">📲 Support:
+            +91 9556436685</a>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script src="utils.js"></script>
+    <script src="questions.js"></script>
+    <script>
+        const user = requireAuth();
+        let selectedTestId = null;
+
+        // ─── INIT ─────────────────────────────────────────────────────────────────
+        if (user) {
+            document.getElementById('candName').textContent = user.name;
+            document.getElementById('candRoll').textContent = user.rollNumber;
+            document.getElementById('candAvatar').textContent =
+                user.name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+            document.getElementById('dashWelcome').textContent =
+                `Welcome back, ${user.name.split(' ')[0]}! 👋 Choose a test to continue your preparation.`;
+
+            renderTestGrid();
+            renderHistory();
+            initLiveLeaderboard();
+        }
+
+        // ─── LIVE LEADERBOARD (FIREBASE) ──────────────────────────────────────────
+        function initLiveLeaderboard() {
+            if (!window.firebaseDB) return;
+
+            const container = document.getElementById('liveLeaderboard');
+
+            // Listen for top 10 scores globally
+            window.firebaseDB.collection('scores')
+                .orderBy('netScore', 'desc')
+                .limit(10)
+                .onSnapshot(snapshot => {
+                    if (snapshot.empty) {
+                        container.innerHTML = '<div style="text-align:center; color:#999; padding:10px;">No ranks yet. Be the first!</div>';
+                        return;
+                    }
+
+                    let html = '<div style="display:flex; flex-direction:column; gap:8px;">';
+                    snapshot.docs.forEach((doc, index) => {
+                        const data = doc.data();
+                        const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+                        const isMe = data.userId === user.rollNumber;
+
+                        html += `
+                            <div style="display:flex; align-items:center; justify-content:space-between; padding:6px 10px; border-radius:6px; background:${isMe ? '#FFF3E0' : '#F5F5F5'}; border: 1px solid ${isMe ? '#FFE0B2' : '#f0f0f0'};">
+                                <div style="display:flex; align-items:center; gap:8px;">
+                                    <span style="font-weight:800; color:${index < 3 ? '#E65100' : '#666'}; width:20px;">${medal}</span>
+                                    <div style="font-weight:700; color:var(--nta-navy); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px;">
+                                        ${data.userName} ${isMe ? '(You)' : ''}
+                                    </div>
+                                </div>
+                                <div style="font-weight:800; color:#2E7D32;">${data.netScore}</div>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                    container.innerHTML = html;
+                }, err => {
+                    console.error('❌ Leaderboard listener error:', err);
+                    container.innerHTML = '<div style="color:red; text-align:center;">Failed to load rankings</div>';
+                });
+        }
+
+        // ─── RENDER TEST GRID ─────────────────────────────────────────────────────
+        function renderTestGrid() {
+            const grid = document.getElementById('testGrid');
+            const icons = { 'General Test': '📋', 'Physics': '⚗️', 'History': '📜', 'Chemistry': '🧪' };
+
+            grid.innerHTML = TEST_LIST.map(test => {
+                const unlocked = isTestUnlocked(user.rollNumber, test.id);
+                const history = getTestHistory(test.id);
+                const bestScore = history.length ? Math.max(...history.map(h => h.netScore)) : null;
+
+                return `
+      <div class="test-card ${test.isFree ? 'free-card' : 'locked-card'}">
+        <div class="test-icon">${test.isFree ? (icons[test.subject] || '📋') : (unlocked ? (icons[test.subject] || '📋') : '🔒')}</div>
+        <div class="test-info">
+          <div class="test-title">
+            ${test.isFree ? '🟢' : (unlocked ? '🟢' : '🔒')} ${test.title}
+          </div>
+          <div class="test-meta">
+            <span>📝 ${test.totalQuestions} Questions (attempt ${test.attemptLimit})</span>
+            <span>⏱ ${test.durationMinutes} Minutes</span>
+            <span>📌 +5/−1 Marking</span>
+          </div>
+          ${history.length ? `
+          <div class="test-stats">
+            <span class="stat">🏆 Best: ${bestScore} / ${test.attemptLimit * 5}</span>
+            <span class="stat">🔁 Attempts: ${history.length}</span>
+          </div>` : ''}
+          ${test.isFree ? '<div style="margin-top:6px;"><span class="badge badge-free">✅ FREE — No Payment Needed</span></div>' :
+                        unlocked ? '<div style="margin-top:6px;"><span class="badge badge-free">✅ Unlocked</span></div>' :
+                            '<div style="margin-top:6px;"><span class="badge badge-locked">🔒 Premium — ₹199</span></div>'}
+        </div>
+        <div class="test-action">
+          ${unlocked
+                        ? `<button class="btn-start" onclick="startTest('${test.id}')">▶ ${history.length ? 'Reattempt' : 'Start Test'}</button>`
+                        : `<div class="test-price">₹${test.price}</div><button class="btn-unlock" onclick="openLockModal('${test.id}')">🔒 Unlock</button>`
+                    }
+        </div>
+      </div>`;
+            }).join('');
+        }
+
+        // ─── START TEST ───────────────────────────────────────────────────────────
+        function startTest(testId) {
+            Store.set('activeTestId', testId);
+            Store.set('examStartFresh', true);
+            window.location.href = 'exam.html';
+        }
+
+        // ─── HISTORY ──────────────────────────────────────────────────────────────
+        function getTestHistory(testId) {
+            const all = Store.get('allScores', []);
+            return all.filter(s => s.testId === testId && s.userId === user.rollNumber);
+        }
+
+        function renderHistory() {
+            const all = Store.get('allScores', []);
+            const myHistory = all.filter(s => s.userId === user.rollNumber)
+                .sort((a, b) => new Date(b.calculatedAt) - new Date(a.calculatedAt));
+
+            const table = document.getElementById('historyTable');
+            const noHistory = document.getElementById('noHistory');
+            const tbody = document.getElementById('historyBody');
+
+            if (!myHistory.length) {
+                table.style.display = 'none';
+                noHistory.style.display = 'block';
+                return;
+            }
+
+            noHistory.style.display = 'none';
+            table.style.display = 'table';
+
+            tbody.innerHTML = myHistory.map(h => {
+                const test = TEST_LIST.find(t => t.id === h.testId);
+                const max = (test?.attemptLimit || 40) * 5;
+                const pct = Math.round((h.netScore / max) * 100);
+                const scoreClass = pct >= 70 ? 'score-high' : pct >= 40 ? 'score-mid' : 'score-low';
+                return `<tr>
+        <td><strong>${test?.title || h.testId}</strong></td>
+        <td>#${h.attemptNumber || 1}</td>
+        <td>${formatDateTimeIN(h.calculatedAt)}</td>
+        <td>✅${h.correct} ❌${h.incorrect} ⬜${h.unattempted}</td>
+        <td><span class="score-chip ${scoreClass}">${h.netScore} / ${max}</span></td>
+        <td><a href="result.html?session=${h.sessionId}" style="font-size:12px;">📋 View</a></td>
+      </tr>`;
+            }).join('');
+        }
+
+        // ─── LOCK MODAL ───────────────────────────────────────────────────────────
+        // Renamed from openLockModal to openUnlockModal to match the instruction's JS snippet
+        function openLockModal(testId) {
+            selectedTestId = testId;
+            const test = TEST_LIST.find(t => t.id === testId);
+            if (!test) return;
+
+            // Update WhatsApp links for plans
+            document.getElementById('planSingleLink').href = `https://wa.me/919556436685?text=Hi, I want to buy a Single Test (${test.title}) for ₹49`;
+            document.getElementById('planSubjectLink').href = `https://wa.me/919556436685?text=Hi, I want to buy the ${test.subject} Subject Pack for ₹149`;
+            document.getElementById('planSubjectText').textContent = `Unlock ALL ${test.subject} mocks`;
+
+            document.getElementById('lockModal').classList.add('active');
+        }
+        function closeLockModal() { document.getElementById('lockModal').classList.remove('active'); }
+
+        function showCodeModal() {
+            closeLockModal();
+            document.getElementById('codeInput').value = '';
+            document.getElementById('codeError').style.display = 'none';
+            document.getElementById('codeSuccess').style.display = 'none';
+            document.getElementById('codeModal').classList.add('active');
+        }
+        function closeCodeModal() { document.getElementById('codeModal').classList.remove('active'); }
+
+        function redeemCode() {
+            const code = document.getElementById('codeInput').value.trim().toUpperCase();
+            const errEl = document.getElementById('codeError');
+            const okEl = document.getElementById('codeSuccess');
+            errEl.style.display = 'none';
+            okEl.style.display = 'none';
+
+            if (!isValidCodeFormat(code)) {
+                errEl.textContent = 'Invalid code format. Must be like CUET-XXXX-XXXX.';
+                errEl.style.display = 'block';
+                return;
+            }
+
+            const result = validateUnlockCode(code, user.rollNumber, selectedTestId);
+            if (result.ok) {
+                okEl.textContent = '🎉 ' + result.msg;
+                okEl.style.display = 'block';
+                setTimeout(() => { closeCodeModal(); renderTestGrid(); renderHistory(); }, 2500);
+            } else {
+                errEl.textContent = result.msg;
+                errEl.style.display = 'block';
+                if (result.expired) {
+                    errEl.innerHTML += '<br><a href="https://wa.me/919556436685?text=My+unlock+code+expired" target="_blank" style="color:#25D366;font-weight:600;">📲 Get new code on WhatsApp</a>';
+                }
+            }
+        }
+
+        // Format helper for the code input
+        document.getElementById('codeInput')?.addEventListener('input', function () {
+            let val = this.value.replace(/[^A-Z0-9]/gi, '').toUpperCase();
+            if (val.length > 4 && val[4] !== '-') val = val.slice(0, 4) + '-' + val.slice(4);
+            if (val.length > 9 && val[9] !== '-') val = val.slice(0, 9) + '-' + val.slice(9);
+            this.value = val;
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#003087">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  
+    <title>General Instructions — CUET TEST</title>
+    <link rel="stylesheet" href="base.css">
+    <style>
+        body {
+            background: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .inst-header {
+            background: var(--nta-navy);
+            color: #fff;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .inst-header .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .inst-header h1 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .inst-header p {
+            font-size: 12px;
+            opacity: 0.75;
+        }
+
+        .candidate-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+
+        .cand-avatar-sm {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: #1a4ba0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .inst-main {
+            flex: 1;
+            max-width: 900px;
+            margin: 24px auto;
+            width: 95%;
+        }
+
+        .inst-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: var(--shadow-panel);
+            overflow: hidden;
+        }
+
+        .inst-card-title {
+            background: linear-gradient(90deg, var(--nta-navy), #1a4ba0);
+            color: #fff;
+            padding: 16px 24px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 3px solid var(--nta-saffron);
+        }
+
+        .inst-body {
+            padding: 24px;
+            max-height: 55vh;
+            overflow-y: auto;
+            line-height: 1.75;
+        }
+
+        .inst-body h3 {
+            color: var(--nta-navy);
+            font-size: 14px;
+            font-weight: 700;
+            margin: 20px 0 10px;
+            padding: 6px 12px;
+            background: #EEF2FF;
+            border-left: 4px solid var(--nta-navy);
+            letter-spacing: 0.5px;
+        }
+
+        .inst-body h3:first-child {
+            margin-top: 0;
+        }
+
+        .inst-body ol,
+        .inst-body ul {
+            padding-left: 22px;
+        }
+
+        .inst-body li {
+            font-size: 13.5px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .inst-body li strong {
+            color: var(--nta-navy);
+        }
+
+        /* Palette Legend */
+        .palette-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+        }
+
+        .pal-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .pal-grey {
+            background: #9E9E9E;
+        }
+
+        .pal-red {
+            background: #F44336;
+        }
+
+        .pal-green {
+            background: #4CAF50;
+        }
+
+        .pal-purple {
+            background: #7B1FA2;
+        }
+
+        .pal-purple-dot {
+            background: #7B1FA2;
+            position: relative;
+        }
+
+        .pal-purple-dot::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            background: #4CAF50;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        /* Marking Scheme Table */
+        .marking-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+            font-size: 13px;
+        }
+
+        .marking-table th {
+            background: var(--nta-navy);
+            color: #fff;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        .marking-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .marking-table tr:nth-child(even) td {
+            background: #F5F5F5;
+        }
+
+        .correct-mark {
+            color: #2E7D32;
+            font-weight: 700;
+        }
+
+        .wrong-mark {
+            color: #C62828;
+            font-weight: 700;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            background: #FFF8E1;
+            border-top: 1px solid #FFD54F;
+            padding: 10px 24px;
+            font-size: 12px;
+            color: #795548;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .scroll-progress {
+            height: 4px;
+            background: #E0E0E0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .scroll-progress-bar {
+            height: 100%;
+            background: var(--nta-saffron);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* Agreement */
+        .inst-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--divider);
+        }
+
+        .agree-text {
+            font-size: 12px;
+            color: #424242;
+            line-height: 1.7;
+            background: #F8F9FF;
+            border: 1px solid #D0DAF5;
+            border-radius: 6px;
+            padding: 14px;
+            margin-bottom: 16px;
+        }
+
+        .inst-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .btn-proceed {
+            background: var(--btn-save);
+            color: #fff;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-proceed:hover:not(:disabled) {
+            background: #1b5e20;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+        }
+
+        .btn-proceed:disabled {
+            background: #BDBDBD;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .scroll-hint {
+            font-size: 12px;
+            color: #9E9E9E;
+            text-align: center;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="tricolor-bar"></div>
+
+    <!-- Header -->
+    <header class="inst-header">
+        <div class="brand">
+            <div
+                style="background:#fff;color:var(--nta-navy);font-weight:900;font-size:14px;padding:4px 8px;border-radius:3px;">
+                NTA</div>
+            <div>
+                <h1>CUET TEST | General Instructions</h1>
+                <p>Computer Based Test (CBT) — Practice Portal</p>
+            </div>
+        </div>
+        <div class="candidate-info" id="candidateInfo">
+            <div class="cand-avatar-sm" id="candidateAvatar">—</div>
+            <div>
+                <div id="candidateName" style="font-weight:700;font-size:13px;">Loading...</div>
+                <div id="candidateRoll" style="font-size:11px;opacity:0.7;"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="inst-main">
+        <div class="inst-card">
+            <div class="inst-card-title">
+                📋 GENERAL INSTRUCTIONS FOR CANDIDATES
+            </div>
+
+            <div class="inst-body" id="instBody">
+                <h3>GENERAL INSTRUCTIONS</h3>
+                <ol>
+                    <li>Total duration of the examination is <strong>60 minutes</strong>.</li>
+                    <li>The clock will be set at the server. The <strong>countdown timer</strong> at the top right
+                        corner of your screen will display the remaining time available for you to complete the exam.
+                        When the timer reaches zero, the examination will end by itself. You need not terminate the exam
+                        or submit your paper.</li>
+                    <li>
+                        The <strong>Question Palette</strong> displayed on the right side of screen will show the status
+                        of each question using one of the following symbols:
+                        <div class="palette-legend" style="margin-top:12px;">
+                            <div class="legend-item">
+                                <div class="pal-circle pal-grey"></div><span><strong>Grey</strong> — You have
+                                    <strong>NOT visited</strong> the question yet.</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="pal-circle pal-red"></div><span><strong>Red</strong> — You have <strong>NOT
+                                        answered</strong> the question (but visited it).</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="pal-circle pal-green"></div><span><strong>Green</strong> — You have
+                                    <strong>answered</strong> the question.</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="pal-circle pal-purple"></div><span><strong>Purple</strong> — You have
+                                    <strong>NOT answered</strong> the question but <strong>marked it for
+                                        review</strong>.</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="pal-circle pal-purple pal-purple-dot" style="position:relative;"></div>
+                                <span><strong>Purple + Green Dot</strong> — You have <strong>answered</strong> and also
+                                    <strong>marked for review</strong>. Answer WILL be considered for evaluation.</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li>To select your answer, click on the button of one of the options.</li>
+                    <li>To <strong>deselect</strong> your chosen answer, click on the button of your chosen option again
+                        or click on the <strong>"Clear Response"</strong> button.</li>
+                    <li>To <strong>change</strong> your chosen answer, click the button of another option.</li>
+                    <li>To <strong>save</strong> your answer, you MUST click the <strong>"Save &amp; Next"</strong>
+                        button.</li>
+                    <li>To mark a question for review, click the <strong>"Mark for Review &amp; Next"</strong> button.
+                        If an answer is selected, it will be saved and considered for evaluation.</li>
+                    <li>To change your answer to a question, first select the question and then follow the procedure for
+                        answering that question.</li>
+                    <li><strong>Note:</strong> Questions that are saved or <em>answered and marked for review</em> will
+                        <strong>ONLY</strong> be considered for evaluation.
+                    </li>
+                </ol>
+
+                <h3>NAVIGATING TO A QUESTION</h3>
+                <ul>
+                    <li>Click on the question number in the Question Palette to go directly to that question.
+                        <strong>NOTE:</strong> This does NOT save your answer to the current question.
+                    </li>
+                    <li>Click <strong>"Save &amp; Next"</strong> to save your answer and proceed to the next question.
+                    </li>
+                    <li>Click <strong>"Mark for Review &amp; Next"</strong> to mark the current question and proceed to
+                        the next question.</li>
+                </ul>
+
+                <h3>SECTION NAVIGATION</h3>
+                <ul>
+                    <li>Sections of this question paper are displayed on the top bar of the screen.</li>
+                    <li>Questions in a section can be viewed by clicking on the section name.</li>
+                    <li>The section you are currently viewing is highlighted.</li>
+                    <li>You can shuffle between sections and questions anytime during the exam.</li>
+                </ul>
+
+                <h3>MARKING SCHEME — CUET (UG)</h3>
+                <table class="marking-table">
+                    <thead>
+                        <tr>
+                            <th>Situation</th>
+                            <th>Marks</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Correct Answer</td>
+                            <td class="correct-mark">+5</td>
+                            <td>5 marks awarded for each correct answer</td>
+                        </tr>
+                        <tr>
+                            <td>Wrong Answer</td>
+                            <td class="wrong-mark">−1</td>
+                            <td>1 mark deducted for each incorrect answer</td>
+                        </tr>
+                        <tr>
+                            <td>Unattempted</td>
+                            <td>0</td>
+                            <td>No deduction for skipped questions</td>
+                        </tr>
+                        <tr>
+                            <td>Attempt Limit</td>
+                            <td>—</td>
+                            <td>Attempt any <strong>40 of 50</strong> questions in this test</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>ACCESSIBILITY FEATURES</h3>
+                <ul>
+                    <li>Font size can be toggled using <strong>A− / A / A+</strong> buttons in the top bar.</li>
+                    <li>Keyboard navigation: use <strong>Tab</strong> to move between options, <strong>Enter</strong> to
+                        select.</li>
+                    <li>Your progress is auto-saved every 30 seconds to prevent data loss.</li>
+                    <li>If your browser refreshes during the exam, you will be restored to exactly where you left off.
+                    </li>
+                </ul>
+
+                <h3>IMPORTANT WARNINGS</h3>
+                <ul>
+                    <li>Do not press the browser's <strong>Back button</strong> during the examination.</li>
+                    <li>Do not open this exam in <strong>multiple tabs</strong> — it will invalidate your session.</li>
+                    <li>Ensure a stable internet connection throughout the examination.</li>
+                    <li><strong>This is an UNOFFICIAL mock test</strong> — scores hold no academic value.</li>
+                </ul>
+
+                <div id="bottomAnchor"></div>
+            </div>
+
+            <!-- Scroll Progress -->
+            <div class="scroll-indicator">
+                <span>📜</span>
+                <div style="flex:1">
+                    <div style="font-size:11px;margin-bottom:3px;" id="scrollHintText">Scroll down to read all
+                        instructions before proceeding</div>
+                    <div class="scroll-progress">
+                        <div class="scroll-progress-bar" id="scrollBar"></div>
+                    </div>
+                </div>
+                <span id="scrollPct" style="font-weight:700;min-width:36px;text-align:right;">0%</span>
+            </div>
+
+            <!-- Footer with Agreement -->
+            <div class="inst-footer">
+                <div class="agree-text">
+                    ✅ <strong>Declaration:</strong> I have read all the instructions carefully and have understood them.
+                    I agree not to cheat or use unfair means in this examination. I understand that using unfair means
+                    of any sort for my own or someone else's advantage will lead to my disqualification. In case I find
+                    any technical error / discrepancy in the CBT, I will immediately report the matter to the Centre
+                    Supervisor.
+                </div>
+                <div class="inst-actions">
+                    <button class="btn btn-back" onclick="logout()">← Logout</button>
+                    <div style="text-align:right;">
+                        <button class="btn-proceed" id="proceedBtn" disabled onclick="proceedToExam()">
+                            ✅ I Agree &amp; Proceed to Exam
+                        </button>
+                        <div class="scroll-hint" id="scrollHint">Please scroll down to read all instructions first</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="nta-footer">
+        ⚠️ <strong>UNOFFICIAL MOCK TEST PLATFORM</strong> — Not affiliated with NTA. For official CUET:
+        <a href="https://cuet.nta.nic.in" target="_blank">cuet.nta.nic.in</a> &nbsp;|&nbsp;
+        <a href="https://wa.me/919556436685?text=Hi%2C+I+need+help" target="_blank" style="color:#25D366">📲 +91
+            9556436685</a>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script src="utils.js"></script>
+    <script>
+        const user = requireAuth();
+        if (user) {
+            document.getElementById('candidateName').textContent = user.name;
+            document.getElementById('candidateRoll').textContent = user.rollNumber;
+            document.getElementById('candidateAvatar').textContent =
+                user.name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+        }
+
+        // ─── SCROLL DETECTION ────────────────────────────────────────────────────
+        const instBody = document.getElementById('instBody');
+        const proceedBtn = document.getElementById('proceedBtn');
+        const scrollBar = document.getElementById('scrollBar');
+        const scrollPct = document.getElementById('scrollPct');
+        const scrollHint = document.getElementById('scrollHint');
+        let hasScrolledToBottom = false;
+
+        instBody.addEventListener('scroll', function () {
+            const pct = Math.round((this.scrollTop / (this.scrollHeight - this.clientHeight)) * 100);
+            scrollBar.style.width = pct + '%';
+            scrollPct.textContent = pct + '%';
+
+            if (pct >= 95 && !hasScrolledToBottom) {
+                hasScrolledToBottom = true;
+                proceedBtn.disabled = false;
+                scrollHint.textContent = '✅ You have read all instructions. You may now proceed.';
+                scrollHint.style.color = '#2E7D32';
+                document.getElementById('scrollHintText').textContent = '✅ Instructions read completely';
+            }
+        });
+
+        function proceedToExam() {
+            if (user) {
+                Store.set(`seen_instructions_${user.rollNumber}`, true);
+            }
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+
+</html>

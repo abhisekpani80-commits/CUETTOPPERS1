@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#003087">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  
+    <title>Admin Dashboard — CUET TEST</title>
+    <link rel="stylesheet" href="base.css">
+    <style>
+        body {
+            background: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ─── */
+        .admin-header {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 12px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-md);
+        }
+
+        .admin-header h1 {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .admin-header p {
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        .admin-badge {
+            background: var(--nta-saffron);
+            color: #1a1a1a;
+            padding: 3px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* ─── LOGIN GATE ─── */
+        .admin-gate {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px;
+        }
+
+        .gate-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
+            padding: 32px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .gate-card h2 {
+            font-size: 18px;
+            color: var(--nta-navy);
+            margin-bottom: 16px;
+        }
+
+        .pin-input {
+            font-size: 28px;
+            letter-spacing: 12px;
+            text-align: center;
+            padding: 12px;
+            font-family: var(--font-mono);
+            width: 100%;
+            border: 2px solid #BDBDBD;
+            border-radius: 6px;
+        }
+
+        .pin-input:focus {
+            border-color: var(--nta-navy);
+            outline: none;
+        }
+
+        /* ─── MAIN LAYOUT ─── */
+        .admin-main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 20px auto;
+            width: 95%;
+            display: none;
+        }
+
+        .admin-main.active {
+            display: block;
+        }
+
+        /* ─── TABS ─── */
+        .admin-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--divider);
+            padding-bottom: 0;
+        }
+
+        .admin-tab {
+            padding: 10px 20px;
+            border: none;
+            background: transparent;
+            color: #757575;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            font-family: var(--font-primary);
+            transition: all 0.2s;
+        }
+
+        .admin-tab.active {
+            color: var(--nta-navy);
+            border-bottom-color: var(--nta-navy);
+        }
+
+        .admin-tab:hover {
+            color: var(--nta-navy);
+            background: #F8F9FF;
+        }
+
+        .admin-panel {
+            display: none;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        /* ─── CARDS ─── */
+        .admin-card {
+            background: #fff;
+            border: 1px solid var(--divider);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 16px;
+        }
+
+        .admin-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--nta-navy);
+            margin-bottom: 14px;
+            border-bottom: 1px solid var(--divider);
+            padding-bottom: 8px;
+        }
+
+        /* ─── STATS ROW ─── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 1px solid var(--divider);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-card .stat-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .stat-card .stat-num {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--nta-navy);
+        }
+
+        .stat-card .stat-lbl {
+            font-size: 12px;
+            color: #757575;
+        }
+
+        /* ─── BULK IMPORT ─── */
+        .import-selects {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .import-selects select {
+            padding: 8px 12px;
+            border: 1.5px solid #BDBDBD;
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: var(--font-primary);
+        }
+
+        .import-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 14px;
+            border: 1.5px solid #BDBDBD;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            line-height: 1.6;
+            resize: vertical;
+        }
+
+        .import-textarea:focus {
+            border-color: var(--nta-navy);
+            outline: none;
+        }
+
+        .preview-area {
+            margin-top: 16px;
+        }
+
+        .preview-summary {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .preview-q {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            cursor: pointer;
+            margin: 2px;
+        }
+
+        .preview-ok {
+            background: #4CAF50;
+        }
+
+        .preview-err {
+            background: #F44336;
+        }
+
+        /* ─── CODE GENERATOR ─── */
+        .code-gen-form {
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr;
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 16px;
+        }
+
+        .generated-code-display {
+            background: #1a1a2e;
+            color: #4CAF50;
+            font-family: var(--font-mono);
+            font-size: 24px;
+            letter-spacing: 3px;
+            text-align: center;
+            padding: 18px;
+            border-radius: 6px;
+            margin-top: 12px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .generated-code-display:hover {
+            background: #0d0d1a;
+        }
+
+        /* ─── CODE LOG TABLE ─── */
+        .code-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .code-table th {
+            background: var(--nta-navy);
+            color: #fff;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .code-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--divider);
+        }
+
+        .code-table tr:hover td {
+            background: #F8F9FF;
+        }
+
+        .code-status {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .code-active {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .code-used {
+            background: #F3E5F5;
+            color: #6A1B9A;
+        }
+
+        .code-expired {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
+        /* ─── Q BANK TABLE ─── */
+        .qbank-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .qbank-table th {
+            background: #37474F;
+            color: #fff;
+            padding: 8px 10px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .qbank-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--divider);
+        }
+
+        .qbank-table tr:hover td {
+            background: #F8F9FF;
+        }
+
+        .q-del-btn {
+            background: #F44336;
+            color: #fff;
+            border: none;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="tricolor-bar"></div>
+
+    <!-- Header -->
+    <header class="admin-header">
+        <div>
+            <h1>🛡️ CUET Mock Test — Admin Panel</h1>
+            <p>Manage questions, unlock codes, and view stats</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+            <span class="admin-badge">ADMIN</span>
+            <button class="btn btn-back" onclick="window.location.href='dashboard.html'"
+                style="font-size:12px;padding:6px 14px;">🏠 Dashboard</button>
+            <button class="btn" onclick="logout()"
+                style="background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);font-size:12px;padding:6px 14px;">⬅
+                Logout</button>
+        </div>
+    </header>
+
+    <!-- ─── ADMIN LOGIN GATE ─── -->
+    <div class="admin-gate" id="adminGate">
+        <div class="gate-card">
+            <div style="font-size:48px;margin-bottom:12px;">🔐</div>
+            <h2>Admin Access Required</h2>
+            <p style="font-size:13px;color:#757575;margin-bottom:16px;">Enter the 6-digit admin PIN to continue.</p>
+            <input type="password" class="pin-input" id="adminPin" maxlength="6" placeholder="• • • • • •"
+                inputmode="numeric" autocomplete="off">
+            <div class="form-error" id="pinError" style="display:none;text-align:center;margin-top:8px;"></div>
+            <button class="btn btn-primary w-100" style="margin-top:14px;padding:12px;" onclick="adminLogin()">🔑 Access
+                Panel</button>
+            <p style="font-size:11px;color:#9E9E9E;margin-top:12px;">Default PIN: <code>123456</code> (for demo)</p>
+        </div>
+    </div>
+
+    <!-- ─── ADMIN MAIN (hidden until auth) ─── -->
+    <div class="admin-main" id="adminMain">
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-num" id="statUsers">0</div>
+                <div class="stat-lbl">Registered Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📝</div>
+                <div class="stat-num" id="statTests">0</div>
+                <div class="stat-lbl">Total Tests</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-num" id="statAttempts">0</div>
+                <div class="stat-lbl">Test Attempts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔑</div>
+                <div class="stat-num" id="statCodes">0</div>
+                <div class="stat-lbl">Codes Issued</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="import" onclick="showAdminTab('import')">📥 Bulk Import</button>
+            <button class="admin-tab" data-tab="qbank" onclick="showAdminTab('qbank')">📚 Question Bank</button>
+            <button class="admin-tab" data-tab="cms" onclick="showAdminTab('cms')">☁️ Live CMS</button>
+            <button class="admin-tab" data-tab="users" onclick="showAdminTab('users')">👤 User Management</button>
+            <button class="admin-tab" data-tab="codes" onclick="showAdminTab('codes')">🔑 Unlock Codes</button>
+            <button class="admin-tab" data-tab="scores" onclick="showAdminTab('scores')">📊 Scores Log</button>
+        </div>
+
+        <!-- ═══════ TAB 1: BULK IMPORT ═══════ -->
+        <div class="admin-panel active" id="panelImport">
+            <div class="admin-card">
+                <h3>📥 Bulk Question Import</h3>
+                <div class="import-selects">
+                    <select id="importTest">
+                        <option value="">Select Test ▼</option>
+                    </select>
+                    <select id="importSection">
+                        <option value="Section II">Section II — Domain</option>
+                        <option value="Section III">Section III — General Test</option>
+                        <option value="Section IA">Section IA — Language</option>
+                    </select>
+                    <select id="importSubject">
+                        <option value="General Test">General Test</option>
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="History">History</option>
+                        <option value="Economics">Economics</option>
+                    </select>
+                    <select id="importDifficulty">
+                        <option value="medium">Medium</option>
+                        <option value="easy">Easy</option>
+                        <option value="hard">Hard</option>
+                    </select>
+                </div>
+
+                <label class="form-label">Paste your questions below (use Q1. / A) B) C) D) / ANS: / EXP: format,
+                    separated by ---):</label>
+                <textarea class="import-textarea" id="importTextarea" placeholder="Q1. A body of mass 5 kg moves with velocity 20 m/s. Its kinetic energy is:
+A) 500 J
+B) 1000 J
+C) 250 J
+D) 2000 J
+ANS: B
+EXP: KE = ½mv² = ½ × 5 × 400 = 1000 J
+---
+Q2. The speed of light in vacuum is approximately:
+A) 3 × 10⁶ m/s
+B) 3 × 10⁸ m/s
+C) 3 × 10¹⁰ m/s
+D) 3 × 10⁴ m/s
+ANS: B
+EXP: Speed of light c ≈ 3 × 10⁸ m/s"></textarea>
+
+                <div style="margin-top:12px;display:flex;gap:10px;">
+                    <button class="btn btn-primary" onclick="parseQuestions()">🔍 Parse & Preview</button>
+                    <button class="btn btn-save" id="importBtn" onclick="importValid()" disabled>✅ Import All
+                        Valid</button>
+                </div>
+
+                <!-- Preview Area -->
+                <div class="preview-area" id="previewArea" style="display:none;">
+                    <hr class="nta-divider" style="margin:16px 0;">
+                    <div class="preview-summary">
+                        <span style="font-weight:700;color:var(--nta-navy);">Preview:</span>
+                        <span id="previewOkCount" style="color:#2E7D32;font-weight:700;"></span>
+                        <span id="previewErrCount" style="color:#C62828;font-weight:700;"></span>
+                    </div>
+                    <div id="previewGrid" style="margin-bottom:12px;"></div>
+                    <div id="previewErrors" style="font-size:12px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ TAB 2: QUESTION BANK ═══════ -->
+        <div class="admin-panel" id="panelQbank">
+            <div class="admin-card">
+                <h3>📚 Question Bank</h3>
+                <div style="margin-bottom:12px;display:flex;gap:10px;align-items:center;">
+                    <select id="qbankFilter" onchange="renderQBank()"
+                        style="padding:6px 12px;border:1px solid #BDBDBD;border-radius:4px;font-size:12px;">
+                        <option value="">All Tests</option>
+                    </select>
+                    <span id="qbankCount" style="font-size:12px;color:#757575;"></span>
+                </div>
+                <div style="max-height:500px;overflow-y:auto;">
+                    <table class="qbank-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Question</th>
+                                <th>Ans</th>
+                                <th>Topic</th>
+                                <th>Diff</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="qbankBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════ TAB 3: UNLOCK CODES ═══════ -->
+        <div class="admin-panel" id="panelCodes">
+            <div class="admin-card">
+                <h3>🔑 Generate Unlock Code</h3>
+                <div class="code-gen-form">
+                    <div class="form-group" style="margin:0;">
+                        <label class="form-label">Student Roll Number</label>
+                        <input type="text" class="form-control" id="codeRollNo" placeholder="e.g., CUET2025001"
+                            style="text-transform:uppercase;">
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label class="form-label">Test to Unlock</label>
+                        <select class="form-control" id="codeTestId"></select>
+                    </div>
+                    <div class="form-group" style="margin:0;">
+                        <label class="form-label">&nbsp;</label>
+                        <button class="btn btn-primary w-100" onclick="generateCode()">⚡ Generate Code</button>
+                    </div>
+                </div>
+                <div id="generatedCodeBox" style="display:none;">
+                    <div class="alert-banner alert-success" style="margin-bottom:8px;">✅ Code generated! Copy and send
+                        to student via WhatsApp.</div>
+                    <div class="generated-code-display" id="generatedCode" onclick="copyCode()" title="Click to copy">—
+                    </div>
+                    <div style="text-align:center;font-size:11px;color:#9E9E9E;margin-top:6px;">⏳ Expires in 5 minutes •
+                        Click to copy</div>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h3>📋 Code Issue Log</h3>
+                <div style="max-height:350px;overflow-y:auto;">
+                    <table class="code-table">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Test</th>
+                                <th>Issued To</th>
+                                <th>Issued At</th>
+                                <th>Expires</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="codeLogBody"></tbody>
+                    </table>
+                </div>
+                <div id="noCodesMsg" style="text-align:center;padding:20px;color:#9E9E9E;font-size:13px;display:none;">
+                    No codes issued yet.</div>
+            </div>
+        </div>
+            <!-- ═══════ TAB 5: LIVE CMS ═══════ -->
+        <div class="admin-panel" id="panelCms">
+                <div class="admin-card">
+                    <h3>☁️ Cloud Question Management (Firebase)</h3>
+                    <p style="font-size:12px; color:#666; margin-bottom:15px;">Questions here are synced instantly to
+                        all students. No code update required.</p>
+
+                    <div style="display:flex; gap:10px; margin-bottom:15px;">
+                        <button class="btn btn-save" onclick="syncLocalToCloud()" style="font-size:11px;">📤 Sync Local
+                            to Cloud</button>
+                        <button class="btn btn-outline" onclick="loadCloudQuestions()" style="font-size:11px;">🔄
+                            Refresh from Cloud</button>
+                    </div>
+
+                    <div style="max-height:400px; overflow-y:auto;">
+                        <table class="qbank-table">
+                            <thead>
+                                <tr>
+                                    <th>Test ID</th>
+                                    <th>Q.Text</th>
+                                    <th>Ans</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cmsBody">
+                                <tr>
+                                    <td colspan="5" style="text-align:center; padding:20px; color:#999;">Loading Cloud
+                                        Content...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ═══════ TAB 6: USER MANAGEMENT ═══════ -->
+        <div class="admin-panel" id="panelUsers">
+                <div class="admin-card">
+                    <h3>👤 Real-Time User Monitoring</h3>
+                    <div style="max-height:500px; overflow-y:auto;">
+                        <table class="qbank-table">
+                            <thead>
+                                <tr>
+                                    <th>Roll No</th>
+                                    <th>Name</th>
+                                    <th>Last IP / Location</th>
+                                    <th>Last Login</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersBody">
+                                <tr>
+                                    <td colspan="6" style="text-align:center; padding:20px; color:#999;">Loading
+                                        Users...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h3>📜 Live Access Logs (Global)</h3>
+                    <div style="max-height:300px; overflow-y:auto; font-family:var(--font-mono); font-size:10px;">
+                        <table class="code-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>User</th>
+                                    <th>Event</th>
+                                    <th>IP</th>
+                                    <th>Location</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ═══════ TAB 4: SCORES LOG ═══════ -->
+        <div class="admin-panel" id="panelScores">
+                <div class="admin-card">
+                    <h3>📊 All Student Scores</h3>
+                    <div style="margin-bottom:10px;display:flex;gap:10px;align-items:center;">
+                        <button class="btn btn-save" onclick="exportCSV()" style="font-size:11px;padding:6px 14px;">📥
+                            Export CSV</button>
+                        <span id="scoresCount" style="font-size:12px;color:#757575;"></span>
+                    </div>
+                    <div style="max-height:450px;overflow-y:auto;overflow-x:auto;">
+                        <table class="qbank-table" style="min-width:700px;">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Roll No</th>
+                                    <th>Test</th>
+                                    <th>Attempt</th>
+                                    <th>Score (Net)</th>
+                                    <th>Correct</th>
+                                    <th>Incorrect</th>
+                                    <th>Percentile</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scoresBody"></tbody>
+                        </table>
+                    </div>
+                    <div id="noScoresMsg"
+                        style="text-align:center;padding:20px;color:#9E9E9E;font-size:13px;display:none;">
+                        No scores recorded yet.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="nta-footer">
+            ⚠️ <strong>ADMIN PANEL — RESTRICTED ACCESS</strong> &nbsp;|&nbsp;
+            <a href="https://wa.me/919556436685" target="_blank" style="color:#25D366">📲 +91 9556436685</a>
+        </footer>
+
+        <!-- Firebase SDK -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+        <script src="firebase-config.js"></script>
+
+        <script src="utils.js"></script>
+        <script src="questions.js"></script>
+        <script>
+            const ADMIN_PIN = '123456';
+
+            // ─── ADMIN AUTH ─────────────────────────────────────────────────────────────
+            function adminLogin() {
+                const pin = document.getElementById('adminPin').value;
+                if (pin === ADMIN_PIN) {
+                    document.getElementById('adminGate').style.display = 'none';
+                    document.getElementById('adminMain').classList.add('active');
+                    Store.set('adminAuth', true);
+                    initAdmin();
+                } else {
+                    const err = document.getElementById('pinError');
+                    err.textContent = '❌ Incorrect PIN. Try again.';
+                    err.style.display = 'block';
+                }
+            }
+            document.getElementById('adminPin').addEventListener('keydown', e => { if (e.key === 'Enter') adminLogin(); });
+
+            // Auto-login if recently authenticated
+            if (Store.get('adminAuth', false)) {
+                document.getElementById('adminGate').style.display = 'none';
+                document.getElementById('adminMain').classList.add('active');
+                initAdmin();
+            }
+
+            // ─── INIT ADMIN ─────────────────────────────────────────────────────────────
+            function initAdmin() {
+                // Populate test selectors
+                const testOptions = TEST_LIST.map(t => `<option value="${t.id}">${t.title}</option>`).join('');
+                document.getElementById('importTest').innerHTML = '<option value="">Select Test ▼</option>' + testOptions;
+
+                // For codes, also add FULL_SERIES and SUBJECTS
+                const packOptions = [
+                    '<option value="FULL_SERIES">💎 FULL SERIES PASS (All Subjects)</option>',
+                    '<option value="WEEKLY_PASS">📅 WEEKLY PASS (7 Days)</option>',
+                    ...new Set(TEST_LIST.map(t => `<option value="SUBJECT_${t.subject.toUpperCase()}">📚 ${t.subject} Subject Pack</option>`))
+                ].join('');
+
+                document.getElementById('codeTestId').innerHTML = '<optgroup label="Access Packs">' + packOptions + '</optgroup><optgroup label="Single Tests">' + testOptions + '</optgroup>';
+                document.getElementById('qbankFilter').innerHTML = '<option value="">All Tests</option>' + testOptions;
+
+                updateStats();
+                renderCodeLog();
+                renderQBank();
+                renderScoresLog();
+
+                // Phase 8: Firebase Initializations
+                initUserMonitoring();
+                initCms();
+            }
+
+            // ─── STATS ─────────────────────────────────────────────────────────────────
+            function updateStats() {
+                document.getElementById('statUsers').textContent = 3; // demo
+                document.getElementById('statTests').textContent = TEST_LIST.length;
+                document.getElementById('statAttempts').textContent = Store.get('allScores', []).length;
+                document.getElementById('statCodes').textContent = Store.get('unlockCodes', []).length;
+            }
+
+            // ─── TABS ──────────────────────────────────────────────────────────────────
+            function showAdminTab(tab) {
+                const tabs = ['import', 'qbank', 'cms', 'users', 'codes', 'scores'];
+                tabs.forEach(t => {
+                    const btn = document.querySelector(`.admin-tab[data-tab="${t}"]`);
+                    if (btn) btn.classList.toggle('active', t === tab);
+                    const panel = document.getElementById(`panel${t.charAt(0).toUpperCase() + t.slice(1)}`);
+                    if (panel) panel.classList.toggle('active', t === tab);
+                });
+            }
+
+            // ─── BULK IMPORT PARSER ────────────────────────────────────────────────────
+            let parsedQuestions = [];
+
+            function parseQuestions() {
+                const raw = document.getElementById('importTextarea').value.trim();
+                if (!raw) { showToast('Please paste questions first.', 'warning'); return; }
+
+                const blocks = raw.split(/\n---\n|\n---$|^---\n/g).filter(b => b.trim());
+                parsedQuestions = [];
+                const errors = [];
+
+                blocks.forEach((block, idx) => {
+                    const lines = block.trim().split('\n').map(l => l.trim()).filter(l => l);
+                    const q = { id: `IMP_${Date.now()}_${idx}`, valid: true, errors: [] };
+
+                    // Extract question text (everything before A))
+                    let questionLines = [];
+                    let optionStartIdx = -1;
+                    for (let i = 0; i < lines.length; i++) {
+                        if (/^A\)/.test(lines[i])) { optionStartIdx = i; break; }
+                        questionLines.push(lines[i]);
+                    }
+                    q.questionText = questionLines.join(' ').replace(/^Q\d+\.\s*/, '').trim();
+
+                    if (!q.questionText) { q.valid = false; q.errors.push('Missing question text'); }
+
+                    // Extract options
+                    q.options = { A: '', B: '', C: '', D: '' };
+                    let opt = null;
+                    for (let i = optionStartIdx; i < lines.length && i >= 0; i++) {
+                        const optMatch = lines[i].match(/^([A-D])\)\s*(.*)/);
+                        if (optMatch) {
+                            opt = optMatch[1];
+                            q.options[opt] = optMatch[2].trim();
+                        } else if (lines[i].startsWith('ANS:')) {
+                            q.correctAnswer = lines[i].replace('ANS:', '').trim().toUpperCase();
+                        } else if (lines[i].startsWith('EXP:')) {
+                            q.explanation = lines[i].replace('EXP:', '').trim();
+                        } else if (opt && !lines[i].startsWith('ANS:') && !lines[i].startsWith('EXP:')) {
+                            // Multi-line option continuation
+                            q.options[opt] += ' ' + lines[i];
+                        }
+                    }
+
+                    if (!q.options.A || !q.options.B || !q.options.C || !q.options.D) { q.valid = false; q.errors.push('Missing option(s)'); }
+                    if (!q.correctAnswer || !'ABCD'.includes(q.correctAnswer)) { q.valid = false; q.errors.push('Missing or invalid ANS'); }
+                    if (!q.explanation) q.explanation = '';
+
+                    q.questionNumber = idx + 1;
+                    parsedQuestions.push(q);
+                });
+
+                // Show preview
+                const ok = parsedQuestions.filter(q => q.valid).length;
+                const er = parsedQuestions.filter(q => !q.valid).length;
+                document.getElementById('previewArea').style.display = 'block';
+                document.getElementById('previewOkCount').textContent = `✅ ${ok} questions valid`;
+                document.getElementById('previewErrCount').textContent = er > 0 ? `⚠️ ${er} with errors` : '';
+
+                document.getElementById('previewGrid').innerHTML = parsedQuestions.map((q, i) =>
+                    `<span class="preview-q ${q.valid ? 'preview-ok' : 'preview-err'}" title="${q.valid ? q.questionText.slice(0, 50) : q.errors.join(', ')}">${i + 1}</span>`
+                ).join('');
+
+                if (er > 0) {
+                    document.getElementById('previewErrors').innerHTML = parsedQuestions
+                        .filter(q => !q.valid)
+                        .map(q => `<div style="color:#C62828;margin:3px 0;">❌ Q${q.questionNumber}: ${q.errors.join(', ')}</div>`)
+                        .join('');
+                } else {
+                    document.getElementById('previewErrors').innerHTML = '';
+                }
+
+                document.getElementById('importBtn').disabled = ok === 0;
+                if (ok > 0) showToast(`Parsed ${ok} valid question(s). Ready to import!`, 'success');
+            }
+
+            function importValid() {
+                const testId = document.getElementById('importTest').value;
+                if (!testId) { showToast('Please select a test first.', 'warning'); return; }
+
+                const subject = document.getElementById('importSubject').value;
+                const difficulty = document.getElementById('importDifficulty').value;
+                const valid = parsedQuestions.filter(q => q.valid);
+
+                // Get existing custom questions
+                const customKey = `custom_questions_${testId}`;
+                const existing = Store.get(customKey, []);
+                const startNum = existing.length + 1;
+
+                const newQs = valid.map((q, i) => ({
+                    id: q.id,
+                    questionNumber: startNum + i,
+                    questionText: q.questionText,
+                    options: q.options,
+                    correctAnswer: q.correctAnswer,
+                    explanation: q.explanation || '',
+                    topic: subject,
+                    difficulty: difficulty,
+                    importedAt: nowISO()
+                }));
+
+                existing.push(...newQs);
+                Store.set(customKey, existing);
+
+                showToast(`✅ Imported ${newQs.length} questions to ${testId}! Total: ${existing.length}`, 'success');
+                document.getElementById('importTextarea').value = '';
+                document.getElementById('previewArea').style.display = 'none';
+                document.getElementById('importBtn').disabled = true;
+                parsedQuestions = [];
+                renderQBank();
+                updateStats();
+            }
+
+            // ─── QUESTION BANK ────────────────────────────────────────────────────────
+            function renderQBank() {
+                const filter = document.getElementById('qbankFilter').value;
+                const tbody = document.getElementById('qbankBody');
+                let allQs = [];
+
+                TEST_LIST.forEach(t => {
+                    if (filter && t.id !== filter) return;
+                    const stock = (QUESTION_BANK[t.id] || []).map(q => ({ ...q, testId: t.id, source: 'built-in' }));
+                    const custom = Store.get(`custom_questions_${t.id}`, []).map(q => ({ ...q, testId: t.id, source: 'imported' }));
+                    allQs.push(...stock, ...custom);
+                });
+
+                document.getElementById('qbankCount').textContent = `${allQs.length} questions`;
+
+                tbody.innerHTML = allQs.slice(0, 200).map((q, i) => `
+      <tr>
+        <td style="font-weight:700;">${i + 1}</td>
+        <td title="${q.questionText}">${q.questionText.slice(0, 80)}${q.questionText.length > 80 ? '…' : ''}</td>
+        <td style="font-weight:700;color:#2E7D32;">${q.correctAnswer}</td>
+        <td>${q.topic || '—'}</td>
+        <td><span class="diff-badge diff-${q.difficulty || 'medium'}" style="font-size:10px;padding:2px 8px;">${q.difficulty || 'medium'}</span></td>
+        <td>${q.source === 'imported' ? '<button class="q-del-btn" onclick="deleteQ(\'' + q.testId + '\',\'' + q.id + '\')">✕</button>' : '<span style="font-size:10px;color:#9E9E9E;">built-in</span>'}</td>
+      </tr>`).join('');
+            }
+
+            function deleteQ(testId, qId) {
+                if (!confirm('Delete this question?')) return;
+                const key = `custom_questions_${testId}`;
+                const qs = Store.get(key, []).filter(q => q.id !== qId);
+                Store.set(key, qs);
+                renderQBank();
+                showToast('Question deleted.', 'info');
+            }
+
+            // ─── UNLOCK CODE GENERATOR ─────────────────────────────────────────────────
+            function generateCode() {
+                const rollNo = document.getElementById('codeRollNo').value.trim().toUpperCase();
+                const testId = document.getElementById('codeTestId').value;
+
+                if (!rollNo) { showToast('Enter student Roll Number.', 'warning'); return; }
+                if (!testId) { showToast('Select a test.', 'warning'); return; }
+
+                const code = generateUnlockCode();
+                const now = new Date();
+                const exp = new Date(now.getTime() + 5 * 60000);
+
+                const codeObj = {
+                    code: code,
+                    testId: testId,
+                    issuedTo: rollNo,
+                    issuedAt: now.toISOString(),
+                    expiresAt: exp.toISOString(),
+                    status: 'active',
+                    redeemedAt: null,
+                    redeemedBy: null
+                };
+
+                const codes = Store.get('unlockCodes', []);
+                codes.push(codeObj);
+                Store.set('unlockCodes', codes);
+
+                document.getElementById('generatedCodeBox').style.display = 'block';
+                document.getElementById('generatedCode').textContent = code;
+
+                renderCodeLog();
+                updateStats();
+                showToast(`Code generated for ${rollNo}! Expires in 5 minutes.`, 'success');
+            }
+
+            function copyCode() {
+                const code = document.getElementById('generatedCode').textContent;
+                navigator.clipboard.writeText(code).then(() => showToast('📋 Code copied to clipboard!', 'success'));
+            }
+
+            function renderCodeLog() {
+                const codes = Store.get('unlockCodes', []);
+                const tbody = document.getElementById('codeLogBody');
+                const noMsg = document.getElementById('noCodesMsg');
+
+                if (!codes.length) { noMsg.style.display = 'block'; tbody.innerHTML = ''; return; }
+                noMsg.style.display = 'none';
+
+                // Update expired status
+                const now = new Date();
+                codes.forEach(c => {
+                    if (c.status === 'active' && new Date(c.expiresAt) < now) c.status = 'expired';
+                });
+                Store.set('unlockCodes', codes);
+
+                tbody.innerHTML = codes.slice().reverse().map(c => {
+                    const test = TEST_LIST.find(t => t.id === c.testId);
+                    const statusClass = c.status === 'active' ? 'code-active' : c.status === 'used' ? 'code-used' : 'code-expired';
+                    return `<tr>
+        <td style="font-family:var(--font-mono);font-weight:700;font-size:12px;">${c.code}</td>
+        <td>${test?.title || c.testId}</td>
+        <td>${c.issuedTo}</td>
+        <td style="font-size:11px;">${formatDateTimeIN(c.issuedAt)}</td>
+        <td style="font-size:11px;">${formatDateTimeIN(c.expiresAt)}</td>
+        <td><span class="code-status ${statusClass}">${c.status}</span></td>
+      </tr>`;
+                }).join('');
+            }
+
+            // ─── SCORES LOG ───────────────────────────────────────────────────────────
+            function renderScoresLog() {
+                const all = Store.get('allScores', []).slice().reverse();
+                const tbody = document.getElementById('scoresBody');
+                const noMsg = document.getElementById('noScoresMsg');
+                const count = document.getElementById('scoresCount');
+
+                if (!all.length) { noMsg.style.display = 'block'; tbody.innerHTML = ''; count.textContent = ''; return; }
+                noMsg.style.display = 'none';
+                count.textContent = `${all.length} attempts recorded`;
+
+                tbody.innerHTML = all.map(s => {
+                    const test = TEST_LIST.find(t => t.id === s.testId);
+                    const max = (test?.attemptLimit || 40) * 5;
+                    return `<tr>
+        <td style="font-weight:600;">${s.userName || '—'}</td>
+        <td>${s.userId}</td>
+        <td>${test?.title || s.testId}</td>
+        <td>#${s.attemptNumber || 1}</td>
+        <td style="font-weight:700;color:var(--nta-navy);">${s.netScore} / ${max}</td>
+        <td style="color:#2E7D32;">${s.correct || 0}</td>
+        <td style="color:#C62828;">${s.incorrect || 0}</td>
+        <td>${s.percentile || 0}%</td>
+        <td style="font-size:11px;">${formatDateTimeIN(s.calculatedAt)}</td>
+      </tr>`;
+                }).join('');
+            }
+
+            // ─── CSV EXPORT ───────────────────────────────────────────────────────────
+            function exportCSV() {
+                const all = Store.get('allScores', []);
+                if (!all.length) { showToast('No scores to export.', 'warning'); return; }
+                const headers = 'Name,Roll No,Test,Attempt,Net Score,Correct,Incorrect,Unattempted,Percentile,Date\n';
+                const rows = all.map(s => {
+                    const test = TEST_LIST.find(t => t.id === s.testId);
+                    return `"${s.userName}","${s.userId}","${test?.title || s.testId}",${s.attemptNumber || 1},${s.netScore},${s.correct},${s.incorrect},${s.unattempted},${s.percentile},"${formatDateTimeIN(s.calculatedAt)}"`;
+                }).join('\n');
+
+                const blob = new Blob([headers + rows], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = 'cuet_scores_export.csv'; a.click();
+                URL.revokeObjectURL(url);
+                showToast('✅ CSV downloaded!', 'success');
+            }
+            // ─── PHASE 8: USER MANAGEMENT & CMS (FIREBASE) ──────────────────────────
+            function initUserMonitoring() {
+                if (!window.firebaseDB) return;
+
+                // Listen for Activities
+                window.firebaseDB.collection('logs').orderBy('timestamp', 'desc').limit(50).onSnapshot(snap => {
+                    const tbody = document.getElementById('logsBody');
+                    tbody.innerHTML = snap.docs.map(doc => {
+                        const d = doc.data();
+                        return `<tr>
+                                    <td>${d.timestamp.slice(11, 19)}</td>
+                                    <td><b>${d.rollNumber}</b></td>
+                                    <td><span class="badge" style="font-size:9px;">${d.event}</span></td>
+                                    <td>${d.ip}</td>
+                                    <td>${d.city || '—'}</td>
+                                </tr>`;
+                    }).join('');
+                });
+
+                // Listen for Users
+                window.firebaseDB.collection('users').onSnapshot(snap => {
+                    const tbody = document.getElementById('usersBody');
+                    document.getElementById('statUsers').textContent = snap.size;
+
+                    tbody.innerHTML = snap.docs.map(doc => {
+                        const d = doc.data();
+                        const roll = doc.id;
+                        const status = d.isSuspended ? '<span class="code-status code-expired">Suspended</span>' : '<span class="code-status code-active">Active</span>';
+                        return `<tr>
+                                    <td style="font-weight:700;">${roll}</td>
+                                    <td>${d.name || '—'}</td>
+                                    <td style="font-size:10px;">${d.lastIp || '—'} (${d.lastCity || '—'})</td>
+                                    <td style="font-size:10px;">${d.lastLogin ? d.lastLogin.slice(0, 16).replace('T', ' ') : '—'}</td>
+                                    <td>${status}</td>
+                                    <td>
+                                        <button class="btn" style="font-size:10px; padding:2px 6px; background:${d.isSuspended ? '#4CAF50' : '#F44336'}; color:#fff;" 
+                                                onclick="toggleSuspension('${roll}', ${!d.isSuspended})">
+                                            ${d.isSuspended ? 'Reactivate' : 'Suspend'}
+                                        </button>
+                                    </td>
+                                </tr>`;
+                    }).join('');
+                });
+            }
+
+            async function toggleSuspension(rollNo, shouldSuspend) {
+                if (!window.firebaseDB) return;
+                const msg = shouldSuspend ? `Suspend user ${rollNo}? THEY WILL BE LOGGED OUT INSTANTLY.` : `Reactivate user ${rollNo}?`;
+                if (!confirm(msg)) return;
+
+                try {
+                    await window.firebaseDB.collection('users').doc(rollNo).update({ isSuspended: shouldSuspend });
+                    showToast('User status updated.', 'success');
+                } catch (err) {
+                    console.error('❌ Suspension failed:', err);
+                    showToast('Failed to update status.', 'error');
+                }
+            }
+
+            // --- CMS Logic ---
+            function initCms() {
+                if (!window.firebaseDB) return;
+                loadCloudQuestions();
+            }
+
+            async function loadCloudQuestions() {
+                const tbody = document.getElementById('cmsBody');
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">Refreshing...</td></tr>';
+
+                try {
+                    const snap = await window.firebaseDB.collection('test_content').get();
+                    if (snap.empty) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px; color:#999;">No questions in cloud.</td></tr>';
+                        return;
+                    }
+
+                    tbody.innerHTML = snap.docs.slice(0, 100).map(doc => {
+                        const q = doc.data();
+                        return `<tr>
+                                    <td>${q.testId}</td>
+                                    <td title="${q.questionText}">${q.questionText.slice(0, 50)}...</td>
+                                    <td style="font-weight:800;">${q.correctAnswer}</td>
+                                    <td><span class="code-status code-active">LIVE</span></td>
+                                    <td><button class="q-del-btn" onclick="deleteCloudQ('${doc.id}')">✕</button></td>
+                                </tr>`;
+                    }).join('');
+                } catch (err) {
+                    console.error('❌ Load cloud failed:', err);
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:red;">Sync error</td></tr>';
+                }
+            }
+
+            async function syncLocalToCloud() {
+                if (!window.firebaseDB) return;
+                if (!confirm('This will upload all CURRENTLY registered local questions to the cloud. Proceed?')) return;
+
+                const allQs = [];
+                TEST_LIST.forEach(t => {
+                    const stock = (QUESTION_BANK[t.id] || []).map(q => ({ ...q, testId: t.id }));
+                    const custom = Store.get(`custom_questions_${t.id}`, []).map(q => ({ ...q, testId: t.id }));
+                    allQs.push(...stock, ...custom);
+                });
+
+                showToast(`Syncing ${allQs.length} questions...`, 'info');
+                const batch = window.firebaseDB.batch();
+
+                allQs.forEach(q => {
+                    const ref = window.firebaseDB.collection('test_content').doc(`${q.testId}_${q.id}`);
+                    batch.set(ref, q);
+                });
+
+                try {
+                    await batch.commit();
+                    showToast('✅ All questions synced to Cloud!', 'success');
+                    loadCloudQuestions();
+                } catch (err) {
+                    console.error('❌ Sync failed:', err);
+                    showToast('Partial sync failure.', 'error');
+                }
+            }
+
+            async function deleteCloudQ(docId) {
+                if (!confirm('Delete this question from CLOUD instantly?')) return;
+                try {
+                    await window.firebaseDB.collection('test_content').doc(docId).delete();
+                    loadCloudQuestions();
+                    showToast('Deleted from cloud.', 'info');
+                } catch (err) {
+                    showToast('Delete failed.', 'error');
+                }
+            }
+        </script>
+</body>
+
+</html>

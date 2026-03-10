@@ -1,0 +1,333 @@
+/* ───────────────────────────────────────────
+   LOGIN PAGE STYLES
+   ─────────────────────────────────────────── */
+
+body {
+    background: linear-gradient(135deg, #001f5c 0%, #003087 60%, #1a4ba0 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ─── HEADER ─── */
+.login-header {
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nta-emblem {
+    width: 52px;
+    height: 52px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 900;
+    color: var(--nta-navy);
+    text-align: center;
+    line-height: 1.1;
+    padding: 4px;
+    flex-shrink: 0;
+}
+
+.header-title {
+    color: #fff;
+}
+
+.header-title h1 {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.3px;
+}
+
+.header-title p {
+    font-size: 12px;
+    opacity: 0.75;
+    margin-top: 2px;
+}
+
+.lang-toggle-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 4px;
+}
+
+.lang-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-primary);
+}
+
+.lang-btn.active {
+    background: #fff;
+    color: var(--nta-navy);
+}
+
+/* ─── MAIN CONTENT ─── */
+.login-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+}
+
+.login-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 440px;
+    overflow: hidden;
+}
+
+.login-card-header {
+    background: linear-gradient(135deg, var(--nta-navy) 0%, #1a4ba0 100%);
+    padding: 24px 28px;
+    color: #fff;
+    text-align: center;
+    border-bottom: 3px solid var(--nta-saffron);
+}
+
+.login-card-header .cuet-logo {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+}
+
+.login-card-header .cuet-sub {
+    font-size: 12px;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+.login-card-body {
+    padding: 28px;
+}
+
+.login-card-body h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--nta-navy);
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 1px solid var(--divider);
+    padding-bottom: 12px;
+}
+
+/* ─── INPUT GROUPS ─── */
+.input-icon-wrap {
+    position: relative;
+}
+
+.input-icon-wrap .icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    pointer-events: none;
+    color: #9E9E9E;
+}
+
+.input-icon-wrap .form-control {
+    padding-left: 38px;
+}
+
+.input-icon-wrap .eye-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #9E9E9E;
+    padding: 4px;
+}
+
+/* ─── DOB FIELDS ─── */
+.dob-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.3fr;
+    gap: 8px;
+}
+
+/* ─── TERMS CHECKBOX ─── */
+.terms-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 16px 0;
+    padding: 12px;
+    background: #F8F9FF;
+    border: 1px solid #D0DAF5;
+    border-radius: 6px;
+}
+
+.terms-check input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    min-width: 16px;
+    margin-top: 2px;
+    accent-color: var(--nta-navy);
+    cursor: pointer;
+}
+
+.terms-check label {
+    font-size: 12px;
+    color: #424242;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.terms-check label a {
+    color: var(--nta-navy);
+}
+
+/* ─── LOGIN BUTTON ─── */
+.btn-login {
+    width: 100%;
+    padding: 13px;
+    background: var(--nta-navy);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-login:hover:not(:disabled) {
+    background: var(--nta-navy-light);
+    box-shadow: 0 4px 12px rgba(0, 48, 135, 0.3);
+    transform: translateY(-1px);
+}
+
+.btn-login:disabled {
+    background: #BDBDBD;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ─── ERROR ALERT ─── */
+.login-error {
+    background: #FFEBEE;
+    border: 1px solid #FFCDD2;
+    border-left: 4px solid #F44336;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #B71C1C;
+    display: none;
+    align-items: center;
+    gap: 8px;
+}
+
+.login-error.show {
+    display: flex;
+}
+
+/* ─── FORGOT LINK ─── */
+.forgot-link {
+    text-align: right;
+    margin-top: 8px;
+}
+
+.forgot-link a {
+    font-size: 12px;
+    color: var(--nta-navy);
+}
+
+/* ─── DEMO CREDENTIALS BOX ─── */
+.demo-box {
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: #FFF8E1;
+    border: 1px solid #FFD54F;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #5D4037;
+}
+
+.demo-box strong {
+    color: #E65100;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.demo-box code {
+    background: #fff;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 11px;
+}
+
+/* ─── FOOTER ─── */
+.login-footer {
+    background: rgba(0, 0, 0, 0.35);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 14px 24px;
+    text-align: center;
+}
+
+.login-footer p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.login-footer .nic-credit {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+.login-footer a {
+    color: var(--nta-saffron);
+}
+
+/* ─── LOADING SPINNER ─── */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: inline-block;
+}

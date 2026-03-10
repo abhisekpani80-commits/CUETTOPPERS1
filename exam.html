@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#003087">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  
+    <title>CUET TEST — Exam in Progress</title>
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="exam.css">
+</head>
+
+<body>
+
+    <div class="tricolor-bar"></div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+     TOP HEADER
+     ═══════════════════════════════════════════════════════════════════════ -->
+    <header class="exam-header">
+        <!-- Left: Candidate -->
+        <div class="header-cand">
+            <div class="cand-photo" id="candPhoto">RK</div>
+            <div class="cand-details">
+                <div class="cand-name" id="candName">Loading...</div>
+                <div class="cand-roll" id="candRoll">Roll No: —</div>
+            </div>
+        </div>
+
+        <!-- Center: Section Tabs -->
+        <div class="section-tabs" id="sectionTabs">
+            <!-- populated by JS -->
+        </div>
+
+        <!-- Right: Font size + Timer -->
+        <div class="header-right">
+            <div class="font-controls">
+                <button class="font-btn font-sm" onclick="setFontSize('small')" title="Small">A−</button>
+                <button class="font-btn font-md" onclick="setFontSize('medium')" title="Medium"
+                    style="border-left:1px solid rgba(255,255,255,0.2);border-right:1px solid rgba(255,255,255,0.2);">A</button>
+                <button class="font-btn font-lg" onclick="setFontSize('large')" title="Large">A+</button>
+            </div>
+            <div class="timer-box" id="timerBox">
+                <div class="timer-label">Time Left</div>
+                <div class="timer-value" id="timerValue" role="timer" aria-live="off">01:00:00</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+     MAIN EXAM BODY
+     ═══════════════════════════════════════════════════════════════════════ -->
+    <div class="exam-body">
+
+        <!-- ───────────── LEFT: QUESTION PANEL ─────────────────────────────── -->
+        <div class="question-panel">
+            <!-- Question Header -->
+            <div class="question-header">
+                <div class="question-badge" id="questionBadge">Question 1 of 50</div>
+                <div class="question-meta">
+                    <span class="topic-badge" id="topicBadge">General Knowledge</span>
+                    <span class="diff-badge diff-medium" id="diffBadge">Medium</span>
+                    <span class="q-timer" id="qTimer">⏱ 00:00</span>
+                </div>
+            </div>
+
+            <!-- Question Content (scrollable) -->
+            <div class="question-content" id="questionContent">
+                <div class="question-text" id="questionText">Loading question...</div>
+                <div class="options-list" id="optionsList" role="radiogroup" aria-label="Answer options">
+                    <!-- populated by JS -->
+                </div>
+            </div>
+
+            <!-- Attempt Limit Warning -->
+            <div class="attempt-warning" id="attemptWarning">
+                ⚠️ You have reached the attempt limit. Deselect a previously answered question before answering a new
+                one.
+            </div>
+
+            <!-- Bottom Action Bar -->
+            <div class="action-bar">
+                <div class="action-left">
+                    <button class="action-btn btn-mark-review" onclick="markForReview()"
+                        aria-label="Mark for Review and go to Next question">
+                        🔖 Mark for Review &amp; Next
+                    </button>
+                    <button class="action-btn btn-clear-resp" onclick="clearResponse()" aria-label="Clear Response">
+                        🗑️ Clear Response
+                    </button>
+                </div>
+                <div class="action-right">
+                    <button class="action-btn btn-back-q" onclick="navigateQuestion(-1)" aria-label="Previous Question">
+                        ◀ Back
+                    </button>
+                    <button class="action-btn btn-save-next" onclick="saveAndNext()"
+                        aria-label="Save Answer and go to Next question">
+                        ✅ Save &amp; Next
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ───────────── RIGHT: PALETTE PANEL ─────────────────────────────── -->
+        <div class="palette-panel">
+            <div class="palette-header">📊 Question Palette</div>
+
+            <!-- Legend -->
+            <div class="palette-legend">
+                <div class="pal-leg-item">
+                    <div class="pal-dot pal-grey"></div>Not Visited
+                </div>
+                <div class="pal-leg-item">
+                    <div class="pal-dot pal-red"></div>Not Answered
+                </div>
+                <div class="pal-leg-item">
+                    <div class="pal-dot pal-green"></div>Answered
+                </div>
+                <div class="pal-leg-item">
+                    <div class="pal-dot pal-purple"></div>Marked for Review
+                </div>
+                <div class="pal-leg-item">
+                    <div class="pal-dot pal-purple-marked"></div>Answered &amp; Marked
+                </div>
+            </div>
+
+            <!-- Palette Grid -->
+            <div class="palette-grid">
+                <div class="palette-grid-inner" id="paletteGrid" role="navigation" aria-label="Question palette"></div>
+            </div>
+
+            <!-- Summary -->
+            <div class="palette-summary">
+                <div class="summary-row">
+                    <span class="label">
+                        <div class="pal-dot pal-green" style="width:14px;height:14px;"></div> Answered
+                    </span>
+                    <span class="count count-answered" id="sumAnswered">0</span>
+                </div>
+                <div class="summary-row">
+                    <span class="label">
+                        <div class="pal-dot pal-red" style="width:14px;height:14px;"></div> Not Answered
+                    </span>
+                    <span class="count count-not-ans" id="sumNotAnswered">0</span>
+                </div>
+                <div class="summary-row">
+                    <span class="label">
+                        <div class="pal-dot pal-purple" style="width:14px;height:14px;"></div> Marked for Review
+                    </span>
+                    <span class="count count-marked" id="sumMarked">0</span>
+                </div>
+                <div class="summary-row">
+                    <span class="label">
+                        <div class="pal-dot pal-grey" style="width:14px;height:14px;"></div> Not Visited
+                    </span>
+                    <span class="count count-not-visit" id="sumNotVisited">0</span>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="palette-submit">
+                <button class="btn-submit-exam" id="submitExamBtn" onclick="confirmSubmit()">
+                    🏁 SUBMIT EXAM
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════════════════════
+     SUBMIT CONFIRMATION MODAL
+     ═══════════════════════════════════════════════════════════════════════ -->
+    <div class="modal-overlay" id="submitModal" role="dialog" aria-modal="true" aria-labelledby="submitTitle">
+        <div class="modal-box" style="max-width:500px;">
+            <div class="modal-title" id="submitTitle">⚠️ SUBMIT CONFIRMATION</div>
+            <p style="font-size:13px;color:#424242;margin-bottom:14px;">You have chosen to end this examination. Please
+                review your summary before submitting.</p>
+
+            <div style="background:#F8F9FF;border:1px solid #D0DAF5;border-radius:6px;padding:16px;margin-bottom:14px;">
+                <div
+                    style="font-size:13px;font-weight:700;color:var(--nta-navy);margin-bottom:10px;border-bottom:1px solid #D0DAF5;padding-bottom:6px;">
+                    Question Summary</div>
+                <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="display:flex;align-items:center;gap:8px;"><span
+                                style="display:inline-block;width:12px;height:12px;background:#4CAF50;border-radius:50%;"></span>
+                            Answered</span>
+                        <strong id="modalAnswered" style="font-size:18px;color:#2E7D32;">0</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="display:flex;align-items:center;gap:8px;"><span
+                                style="display:inline-block;width:12px;height:12px;background:#F44336;border-radius:50%;"></span>
+                            Not Answered</span>
+                        <strong id="modalNotAnswered" style="font-size:18px;color:#C62828;">0</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="display:flex;align-items:center;gap:8px;"><span
+                                style="display:inline-block;width:12px;height:12px;background:#7B1FA2;border-radius:50%;"></span>
+                            Marked for Review</span>
+                        <strong id="modalMarked" style="font-size:18px;color:#6A1B9A;">0</strong>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <span style="display:flex;align-items:center;gap:8px;"><span
+                                style="display:inline-block;width:12px;height:12px;background:#9E9E9E;border-radius:50%;"></span>
+                            Not Visited</span>
+                        <strong id="modalNotVisited" style="font-size:18px;color:#757575;">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert-banner alert-info" style="margin-bottom:14px;font-size:12px;">
+                ℹ️ Questions <strong>"Answered"</strong> and <strong>"Answered &amp; Marked for Review"</strong> will be
+                considered for evaluation.
+            </div>
+
+            <p style="font-size:12px;color:#C62828;font-weight:600;margin-bottom:16px;">Are you sure you want to submit?
+                This action cannot be undone.</p>
+
+            <div style="display:flex;gap:10px;">
+                <button class="btn w-100" style="background:#9E9E9E;color:#fff;padding:11px;"
+                    onclick="closeSubmitModal()">✕ Cancel</button>
+                <button class="btn btn-submit w-100" style="padding:11px;" onclick="finalSubmit()">✅ Yes, Submit
+                    Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer
+        style="background:#1a1a2e;color:#888;font-size:10px;text-align:center;padding:5px;border-top:2px solid var(--nta-saffron);flex-shrink:0;">
+        ⚠️ UNOFFICIAL MOCK TEST — Not affiliated with NTA |
+        <a href="https://wa.me/919556436685" target="_blank" style="color:#25D366">📲 +91 9556436685</a>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script src="utils.js"></script>
+    <script src="questions.js"></script>
+    <script src="exam.js"></script>
+</body>
+
+</html>

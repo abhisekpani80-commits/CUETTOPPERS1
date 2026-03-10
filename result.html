@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#003087">
+
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  
+    <title>Test Result & Analysis — CUET TEST</title>
+    <link rel="stylesheet" href="base.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+    body {
+        background: #f0f2f5;
+    }
+
+    /* ─── HEADER ─── */
+    .res-header {
+        background: var(--nta-navy);
+        color: #fff;
+        padding: 12px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        box-shadow: var(--shadow-md);
+    }
+
+    .res-header h1 {
+        font-size: 15px;
+        font-weight: 700;
+    }
+
+    .res-header p {
+        font-size: 11px;
+        opacity: 0.7;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* ─── MAIN ─── */
+    .res-main {
+        max-width: 1100px;
+        margin: 24px auto;
+        padding: 0 16px;
+    }
+
+    /* ─── SCORE CARD ─── */
+    .score-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: var(--shadow-panel);
+        overflow: hidden;
+        margin-bottom: 24px;
+    }
+
+    .score-card-header {
+        background: linear-gradient(135deg, var(--nta-navy) 0%, #1a4ba0 100%);
+        color: #fff;
+        padding: 22px 28px;
+        border-bottom: 3px solid var(--nta-saffron);
+    }
+
+    .score-card-header h2 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+
+    .score-meta {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        font-size: 12px;
+        opacity: 0.8;
+        margin-top: 6px;
+    }
+
+    .score-meta span::before {
+        content: '• ';
+    }
+
+    .score-meta span:first-child::before {
+        content: '';
+    }
+
+    .score-card-body {
+        padding: 24px 28px;
+    }
+
+    /* Stat Boxes */
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+
+    .stat-box {
+        background: #F8F9FF;
+        border: 1px solid var(--divider);
+        border-radius: 8px;
+        padding: 14px;
+        text-align: center;
+    }
+
+    .stat-box .stat-num {
+        font-size: 32px;
+        font-weight: 900;
+        line-height: 1;
+        margin-bottom: 4px;
+    }
+
+    .stat-box .stat-lbl {
+        font-size: 12px;
+        color: #757575;
+        font-weight: 500;
+    }
+
+    .stat-num-total {
+        color: var(--nta-navy);
+    }
+
+    .stat-num-correct {
+        color: #2E7D32;
+    }
+
+    .stat-num-wrong {
+        color: #C62828;
+    }
+
+    .stat-num-skip {
+        color: #9E9E9E;
+    }
+
+    /* Score Summary */
+    .score-summary-box {
+        background: linear-gradient(135deg, #F8F9FF, #EEF2FF);
+        border: 2px solid #D0DAF5;
+        border-radius: 10px;
+        padding: 20px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .net-score-display {
+        text-align: center;
+    }
+
+    .net-score-display .label {
+        font-size: 12px;
+        color: #757575;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .net-score-display .value {
+        font-size: 52px;
+        font-weight: 900;
+        color: var(--nta-navy);
+        line-height: 1;
+        font-family: var(--font-mono);
+    }
+
+    .net-score-display .max {
+        font-size: 20px;
+        font-weight: 400;
+        color: #9E9E9E;
+    }
+
+    .score-breakdown {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .breakdown-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+        font-size: 13px;
+        border-bottom: 1px solid var(--divider);
+    }
+
+    .breakdown-row:last-child {
+        border-bottom: none;
+    }
+
+    .breakdown-row .bl {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .breakdown-row .bv {
+        font-weight: 700;
+    }
+
+    .bv-positive {
+        color: #2E7D32;
+    }
+
+    .bv-negative {
+        color: #C62828;
+    }
+
+    .bv-net {
+        color: var(--nta-navy);
+        font-size: 16px;
+    }
+
+    .percentile-box {
+        text-align: center;
+        background: #fff;
+        border: 2px solid #A5D6A7;
+        border-radius: 8px;
+        padding: 16px 20px;
+    }
+
+    .percentile-box .pct-num {
+        font-size: 36px;
+        font-weight: 900;
+        color: #2E7D32;
+    }
+
+    .percentile-box .pct-lbl {
+        font-size: 11px;
+        color: #757575;
+    }
+
+    .pct-bar {
+        height: 6px;
+        background: #E0E0E0;
+        border-radius: 3px;
+        margin: 8px 0;
+        overflow: hidden;
+    }
+
+    .pct-bar-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #4CAF50, #2E7D32);
+        border-radius: 3px;
+        transition: width 1s ease;
+    }
+
+    /* ─── TABS ─── */
+    .tab-row {
+        display: flex;
+        gap: 4px;
+        border-bottom: 2px solid var(--divider);
+        margin-bottom: 20px;
+    }
+
+    .tab-btn {
+        padding: 10px 20px;
+        border: none;
+        background: transparent;
+        color: #757575;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -2px;
+        font-family: var(--font-primary);
+        transition: all 0.2s;
+    }
+
+    .tab-btn.active {
+        color: var(--nta-navy);
+        border-bottom-color: var(--nta-navy);
+    }
+
+    .tab-btn:hover {
+        color: var(--nta-navy);
+        background: #F8F9FF;
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    /* ─── CHARTS GRID ─── */
+    .charts-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .chart-card {
+        background: #fff;
+        border: 1px solid var(--divider);
+        border-radius: 8px;
+        padding: 18px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .chart-card h4 {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--nta-navy);
+        margin-bottom: 14px;
+    }
+
+    .chart-wrap {
+        position: relative;
+        height: 220px;
+    }
+
+    /* ─── TOPIC TABLE ─── */
+    .topic-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    .topic-table th {
+        background: var(--nta-navy);
+        color: #fff;
+        padding: 9px 12px;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    .topic-table td {
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--divider);
+    }
+
+    .topic-table tr:hover td {
+        background: #F8F9FF;
+    }
+
+    .topic-strength {
+        padding: 2px 10px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .str-strong {
+        background: #E8F5E9;
+        color: #2E7D32;
+    }
+
+    .str-average {
+        background: #FFF8E1;
+        color: #E65100;
+    }
+
+    .str-weak {
+        background: #FFEBEE;
+        color: #C62828;
+    }
+
+    .topic-pct {
+        width: 80%;
+        background: #E0E0E0;
+        height: 6px;
+        border-radius: 3px;
+        overflow: hidden;
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .topic-pct-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #F44336, #4CAF50);
+        border-radius: 3px;
+    }
+
+    /* ─── ANSWER TABLE ─── */
+    .answer-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    .answer-table th {
+        background: var(--nta-navy);
+        color: #fff;
+        padding: 9px 12px;
+        text-align: left;
+        font-weight: 600;
+    }
+
+    .answer-table td {
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--divider);
+        vertical-align: top;
+    }
+
+    .answer-table tr.correct td {
+        background: #F1F8E9;
+    }
+
+    .answer-table tr.wrong td {
+        background: #FFF3E0;
+    }
+
+    .answer-table tr.skipped td {
+        background: #FAFAFA;
+        color: #9E9E9E;
+    }
+
+    .answer-table tr:hover td {
+        filter: brightness(0.97);
+    }
+
+    .ans-mark-correct {
+        color: #2E7D32;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .ans-mark-wrong {
+        color: #C62828;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .ans-mark-skip {
+        color: #9E9E9E;
+        font-size: 16px;
+    }
+
+    .score-chip-small {
+        font-size: 12px;
+        font-weight: 700;
+        padding: 1px 8px;
+        border-radius: 10px;
+    }
+
+    .score-pos {
+        background: #E8F5E9;
+        color: #2E7D32;
+    }
+
+    .score-neg {
+        background: #FFEBEE;
+        color: #C62828;
+    }
+
+    .score-zero {
+        background: #F5F5F5;
+        color: #757575;
+    }
+
+    .explanation-text {
+        font-size: 11px;
+        color: #616161;
+        margin-top: 3px;
+        font-style: italic;
+    }
+
+    /* Filter bar */
+    .filter-bar {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .filter-btn {
+        background: #F5F5F5;
+        border: 1px solid var(--divider);
+        color: #424242;
+        padding: 5px 14px;
+        border-radius: 16px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: var(--font-primary);
+        transition: all 0.2s;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+        background: var(--nta-navy);
+        color: #fff;
+        border-color: var(--nta-navy);
+    }
+
+    /* ─── AI ANALYSIS SECTION ─── */
+    .ai-section {
+        background: #fff;
+        border: 1px solid var(--divider);
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .ai-section h4 {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--nta-navy);
+        margin-bottom: 14px;
+    }
+
+    .ai-pattern {
+        background: #F8F9FF;
+        border: 1px solid #D0DAF5;
+        border-left: 4px solid var(--nta-navy);
+        border-radius: 6px;
+        padding: 14px;
+        margin-bottom: 10px;
+    }
+
+    .ai-pattern .pat-title {
+        font-weight: 700;
+        color: var(--nta-navy);
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+
+    .ai-pattern .pat-desc {
+        font-size: 12px;
+        color: #424242;
+        line-height: 1.7;
+    }
+
+    .ai-pattern .pat-rec {
+        font-size: 11px;
+        color: #2E7D32;
+        margin-top: 5px;
+        font-weight: 600;
+    }
+
+    .roadmap-week {
+        background: #F5F5F5;
+        border-radius: 6px;
+        padding: 12px 14px;
+        margin-bottom: 8px;
+        font-size: 12px;
+    }
+
+    .roadmap-week .week-title {
+        font-weight: 700;
+        color: var(--nta-navy);
+        margin-bottom: 4px;
+    }
+
+    /* ─── ACTION BUTTONS ROW ─── */
+    .action-row {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+        .stat-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .charts-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+    <div class="tricolor-bar"></div>
+
+    <!-- Header -->
+    <header class="res-header">
+        <div>
+            <h1>🏁 CUET (UG) 2025 — Mock Test Result</h1>
+            <p>Computer Based Test — Performance Report</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-outline" onclick="downloadPDF()"
+                style="color:#fff;border-color:rgba(255,255,255,0.4);">📥 PDF Report</button>
+            <button class="btn" id="reattemptBtn" onclick="reattempt()"
+                style="background:var(--nta-saffron);color:#1a1a1a;">🔁 Reattempt</button>
+            <button class="btn btn-back" onclick="window.location.href='dashboard.html'">🏠 Dashboard</button>
+        </div>
+    </header>
+
+    <main class="res-main">
+
+        <!-- ─── SCORE CARD ─── -->
+        <div class="score-card" id="scoreCard">
+            <div class="score-card-header">
+                <h2 id="testTitle">CUET TEST — Result</h2>
+                <div class="score-meta">
+                    <span id="metaName">—</span>
+                    <span id="metaRoll">—</span>
+                    <span id="metaDate">—</span>
+                    <span id="metaAttempt">Attempt #1</span>
+                </div>
+            </div>
+            <div class="score-card-body">
+                <!-- Stat Grid -->
+                <div class="stat-grid">
+                    <div class="stat-box">
+                        <div class="stat-num stat-num-total" id="statTotal">50</div>
+                        <div class="stat-lbl">Total Questions</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num stat-num-correct" id="statCorrect">0</div>
+                        <div class="stat-lbl">Correct ✅</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num stat-num-wrong" id="statWrong">0</div>
+                        <div class="stat-lbl">Incorrect ❌</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-num stat-num-skip" id="statSkip">0</div>
+                        <div class="stat-lbl">Unattempted ⬜</div>
+                    </div>
+                </div>
+
+                <!-- Score Summary -->
+                <div class="score-summary-box">
+                    <div class="net-score-display">
+                        <div class="label">NET SCORE</div>
+                        <div class="value" id="netScoreVal">0<span class="max"> / 200</span></div>
+                    </div>
+                    <div class="score-breakdown">
+                        <div class="breakdown-row"><span class="bl">✅ Correct (×5)</span> <span class="bv bv-positive"
+                                id="bdCorrect">+0</span></div>
+                        <div class="breakdown-row"><span class="bl">❌ Negative (×1)</span> <span class="bv bv-negative"
+                                id="bdNegative">−0</span></div>
+                        <div class="breakdown-row"><span class="bl">⬜ Unattempted</span> <span class="bv">0</span></div>
+                        <div class="breakdown-row" style="font-size:15px;"><span class="bl fw-bold">🏆 Net Score</span>
+                            <span class="bv bv-net" id="bdNet">0</span>
+                        </div>
+                        <div class="breakdown-row"><span class="bl">📊 Accuracy</span> <span class="bv"
+                                id="bdAccuracy">0%</span></div>
+                    </div>
+                    <div class="percentile-box">
+                        <div class="pct-lbl">PERCENTILE</div>
+                        <div class="pct-num" id="percentileVal">—%</div>
+                        <div class="pct-bar">
+                            <div class="pct-bar-fill" id="pctBarFill" style="width:0%"></div>
+                        </div>
+                        <div class="pct-lbl" id="pctCaption">Better than — of all takers</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── TABS ─── -->
+        <div class="score-card" style="padding:20px 24px;">
+            <div class="tab-row">
+                <button class="tab-btn active" onclick="showTab('charts')" id="tabCharts">📊 Analytics</button>
+                <button class="tab-btn" onclick="showTab('analysis')" id="tabAnalysis">🧠 AI Analysis</button>
+                <button class="tab-btn" onclick="showTab('answers')" id="tabAnswers">📋 Answer Review</button>
+            </div>
+
+            <!-- ANALYTICS TAB -->
+            <div class="tab-content active" id="tabChartsContent">
+                <div class="charts-grid">
+                    <!-- Donut: Correct/Wrong/Skipped -->
+                    <div class="chart-card">
+                        <h4>🍩 Answer Distribution</h4>
+                        <div class="chart-wrap"><canvas id="donutChart"></canvas></div>
+                    </div>
+                    <!-- Topic-wise Radar -->
+                    <div class="chart-card">
+                        <h4>🕸️ Topic-Wise Performance</h4>
+                        <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
+                    </div>
+                </div>
+                <div class="charts-grid">
+                    <!-- Time per question bar -->
+                    <div class="chart-card">
+                        <h4>⏱ Time Spent Per Question (seconds)</h4>
+                        <div class="chart-wrap"><canvas id="timeChart"></canvas></div>
+                    </div>
+                    <!-- Topic table -->
+                    <div class="chart-card">
+                        <h4>📈 Topic-Wise Breakdown</h4>
+                        <div style="overflow-x:auto;max-height:260px;overflow-y:auto;">
+                            <table class="topic-table" id="topicTable">
+                                <thead>
+                                    <tr>
+                                        <th>Topic</th>
+                                        <th>Correct</th>
+                                        <th>Accuracy</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="topicTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI ANALYSIS TAB -->
+            <div class="tab-content" id="tabAnalysisContent">
+                <div id="aiContent">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <!-- ANSWERS TAB -->
+            <div class="tab-content" id="tabAnswersContent">
+                <div class="filter-bar">
+                    <span style="font-size:13px;font-weight:600;color:#424242;">Show:</span>
+                    <button class="filter-btn active" onclick="filterAnswers('all', this)">All</button>
+                    <button class="filter-btn" onclick="filterAnswers('correct', this)">✅ Correct</button>
+                    <button class="filter-btn" onclick="filterAnswers('wrong', this)">❌ Wrong</button>
+                    <button class="filter-btn" onclick="filterAnswers('skipped', this)">⬜ Skipped</button>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="answer-table" id="answerTable">
+                        <thead>
+                            <tr>
+                                <th style="width:50px;">Q.No</th>
+                                <th>Question (Summary)</th>
+                                <th style="width:90px;">Your Answer</th>
+                                <th style="width:110px;">Correct Answer</th>
+                                <th style="width:60px;">Status</th>
+                                <th style="width:60px;">Marks</th>
+                                <th style="width:70px;">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="answerTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Row -->
+        <div class="action-row">
+            <button class="btn btn-primary" onclick="reattempt()">🔁 Reattempt This Test</button>
+            <button class="btn btn-saffron" onclick="downloadPDF()">📥 Download Score Card (PDF)</button>
+            <button class="btn btn-outline" onclick="window.location.href='dashboard.html'">🏠 Back to
+                Dashboard</button>
+            <a class="btn btn-whatsapp"
+                href="https://wa.me/919556436685?text=I+have+a+question+about+my+mock+test+result" target="_blank"
+                rel="noopener">💬 Help on WhatsApp</a>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="nta-footer" style="margin-top:32px;">
+        ⚠️ <strong>UNOFFICIAL MOCK TEST — Not affiliated with NTA.</strong> Scores hold NO official academic value.
+        &nbsp;|&nbsp;
+        Official site: <a href="https://cuet.nta.nic.in" target="_blank">cuet.nta.nic.in</a> &nbsp;|&nbsp;
+        <a href="https://wa.me/919556436685" target="_blank" style="color:#25D366">📲 +91 9556436685</a>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script src="utils.js"></script>
+    <script src="questions.js"></script>
+    <script>
+        const user = requireAuth();
+        const result = Store.get('lastResult', null);
+
+        if (!result) {
+            window.location.href = 'dashboard.html';
+        }
+
+        // ─── POPULATE SCORE CARD ──────────────────────────────────────────────────
+        function populateScoreCard() {
+            const max = (result.questions?.length ? Math.min(result.questions.length, 40) : 40) * 5;
+            document.getElementById('testTitle').textContent = result.testTitle || 'Mock Test Result';
+            document.getElementById('metaName').textContent = result.userName;
+            document.getElementById('metaRoll').textContent = 'Roll: ' + result.userId;
+            document.getElementById('metaDate').textContent = formatDateTimeIN(result.calculatedAt);
+            document.getElementById('metaAttempt').textContent = 'Attempt #' + (result.attemptNumber || 1);
+
+            document.getElementById('statTotal').textContent = result.questions?.length || 50;
+            document.getElementById('statCorrect').textContent = result.correct || 0;
+            document.getElementById('statWrong').textContent = result.incorrect || 0;
+            document.getElementById('statSkip').textContent = result.unattempted || 0;
+
+            const net = result.netScore || 0;
+            document.getElementById('netScoreVal').innerHTML =
+                `${net}<span class="max"> / ${max}</span>`;
+            document.getElementById('bdCorrect').textContent = '+' + (result.rawScore || 0);
+            document.getElementById('bdNegative').textContent = '−' + (result.negativeMarks || 0);
+            document.getElementById('bdNet').textContent = net;
+
+            const acc = result.attempted ? Math.round((result.correct / result.attempted) * 100) : 0;
+            document.getElementById('bdAccuracy').textContent = acc + '%';
+
+            const pct = result.percentile || 0;
+            document.getElementById('percentileVal').textContent = pct + '%';
+            document.getElementById('pctCaption').textContent = `Better than ${pct}% of all takers`;
+            setTimeout(() => {
+                document.getElementById('pctBarFill').style.width = pct + '%';
+            }, 300);
+        }
+
+        // ─── TOPIC ANALYSIS ───────────────────────────────────────────────────────
+        function analyzeByTopic() {
+            const topics = {};
+            (result.questions || []).forEach(q => {
+                const ans = result.answers?.[q.id] || {};
+                if (!topics[q.topic]) topics[q.topic] = { total: 0, correct: 0, wrong: 0, skip: 0, timeSpent: 0 };
+                const t = topics[q.topic];
+                t.total++;
+                if (!ans.selectedAnswer) { t.skip++; }
+                else if (ans.selectedAnswer === q.correctAnswer) { t.correct++; }
+                else { t.wrong++; }
+                t.timeSpent += ans.timeSpent || 0;
+            });
+            return topics;
+        }
+
+        // ─── BUILD CHARTS ─────────────────────────────────────────────────────────
+        function buildCharts() {
+            const topics = analyzeByTopic();
+
+            // Donut
+            new Chart(document.getElementById('donutChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Correct ✅', 'Incorrect ❌', 'Skipped ⬜'],
+                    datasets: [{
+                        data: [result.correct, result.incorrect, result.unattempted],
+                        backgroundColor: ['#4CAF50', '#F44336', '#9E9E9E'],
+                        borderWidth: 2, borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { font: { size: 12 } } } }
+                }
+            });
+
+            // Radar
+            const topicNames = Object.keys(topics);
+            const topicAccuracy = topicNames.map(t => {
+                const d = topics[t];
+                return d.total ? Math.round((d.correct / d.total) * 100) : 0;
+            });
+            new Chart(document.getElementById('radarChart'), {
+                type: 'radar',
+                data: {
+                    labels: topicNames,
+                    datasets: [{
+                        label: 'Your Score %',
+                        data: topicAccuracy,
+                        backgroundColor: 'rgba(0,48,135,0.15)',
+                        borderColor: '#003087',
+                        pointBackgroundColor: '#003087',
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: { r: { beginAtZero: true, max: 100, ticks: { stepSize: 20, font: { size: 10 } } } },
+                    plugins: { legend: { position: 'bottom', labels: { font: { size: 12 } } } }
+                }
+            });
+
+            // Time per question bar
+            const qLabels = (result.questions || []).slice(0, 50).map(q => `Q${q.questionNumber}`);
+            const qTimes = (result.questions || []).map(q => result.answers?.[q.id]?.timeSpent || 0);
+            const qColors = (result.questions || []).map(q => {
+                const ans = result.answers?.[q.id];
+                if (!ans?.selectedAnswer) return '#9E9E9E';
+                return ans.selectedAnswer === q.correctAnswer ? '#4CAF50' : '#F44336';
+            });
+            new Chart(document.getElementById('timeChart'), {
+                type: 'bar',
+                data: {
+                    labels: qLabels,
+                    datasets: [{
+                        label: 'Time (sec)',
+                        data: qTimes,
+                        backgroundColor: qColors,
+                        borderRadius: 2
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { font: { size: 9 }, maxRotation: 0 } },
+                        y: { ticks: { font: { size: 10 } }, title: { display: true, text: 'Seconds', font: { size: 10 } } }
+                    }
+                }
+            });
+
+            // Topic table
+            const tbody = document.getElementById('topicTableBody');
+            tbody.innerHTML = Object.entries(topics).map(([name, d]) => {
+                const acc = d.total ? Math.round((d.correct / d.total) * 100) : 0;
+                const str = acc >= 80 ? ['str-strong', '🟢 Strong'] : acc >= 60 ? ['str-average', '🟡 Average'] : ['str-weak', '🔴 Weak'];
+                return `<tr>
+        <td>${name}</td>
+        <td>${d.correct} / ${d.total}</td>
+        <td>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <div class="topic-pct"><div class="topic-pct-fill" style="width:${acc}%;background:${acc >= 70 ? '#4CAF50' : acc >= 50 ? '#FF9800' : '#F44336'}"></div></div>
+            <span style="font-weight:700;min-width:35px;">${acc}%</span>
+          </div>
+        </td>
+        <td><span class="topic-strength ${str[0]}">${str[1]}</span></td>
+      </tr>`;
+            }).join('');
+        }
+
+        // ─── AI ANALYSIS ─────────────────────────────────────────────────────────
+        async function generateAIAnalysis() {
+            const content = document.getElementById('aiContent');
+
+            // Check if already generated or loading
+            if (content.dataset.status === 'done' || content.dataset.status === 'loading') return;
+
+            // Paywall Check
+            if (!isPaidUser(result.userId)) {
+                content.innerHTML = `
+                    <div style="text-align:center;padding:50px 20px;background:#FFFBF0;border:2px dashed var(--nta-saffron);border-radius:12px;margin-top:20px;">
+                        <span style="font-size:48px;display:block;margin-bottom:15px;">🔒</span>
+                        <h4 style="color:var(--nta-navy);margin-bottom:10px;">Elite AI Analysis is Locked</h4>
+                        <p style="font-size:14px;color:#666;max-width:400px;margin:0 auto 20px;">
+                            Analysis of performance patterns, 15-day roadmaps, and strategic insights are exclusive to **Premium Users**.
+                        </p>
+                        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                            <a href="dashboard.html" class="btn btn-saffron" style="text-decoration:none;">💎 Upgrade to Unlock AI</a>
+                            <a href="https://wa.me/919556436685?text=Hi, I want to unlock AI Analysis for my mock tests" target="_blank" class="btn btn-whatsapp" style="text-decoration:none;">💬 Chat on WhatsApp</a>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            content.dataset.status = 'loading';
+            content.innerHTML = `
+                <div style="text-align:center;padding:40px;">
+                    <div style="width:40px;height:40px;border:4px solid #f3f3f3;border-top:4px solid var(--nta-navy);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 15px;"></div>
+                    <p style="font-weight:600;color:var(--nta-navy);">Gemini AI is analyzing your performance patterns...</p>
+                    <p style="font-size:12px;color:#666;">Crafting your personalized 15-day roadmap...</p>
+                </div>
+                
+            `;
+
+            const topics = analyzeByTopic();
+            const analysis = await fetchAIAnalysis({
+                userName: result.userName,
+                testTitle: result.testTitle,
+                correct: result.correct,
+                incorrect: result.incorrect,
+                unattempted: result.unattempted,
+                netScore: result.netScore,
+                questions: result.questions,
+                answers: result.answers
+            });
+
+            content.innerHTML = `
+                <div class="ai-section" style="border-top: 4px solid var(--nta-saffron); animation: fadeIn 0.5s ease;">
+                    <div style="display:flex; align-items:center; gap:10px; margin-bottom:15px;">
+                        <span style="font-size:24px;">✨</span>
+                        <h4 style="margin:0;">Elite AI Performance Analysis</h4>
+                    </div>
+                    <div class="pat-desc" style="font-size:14px;">
+                        ${analysis}
+                    </div>
+                    <div style="margin-top:20px; padding-top:15px; border-top:1px solid #eee; font-size:11px; color:#888;">
+                        Powered by Gemini 1.5 Flash • Real-time Strategic Insights
+                    </div>
+                </div>
+            `;
+            content.dataset.status = 'done';
+        }
+
+        // ─── ANSWER TABLE ─────────────────────────────────────────────────────────
+        let currentFilter = 'all';
+        function buildAnswerTable() {
+            const tbody = document.getElementById('answerTableBody');
+            const qs = result.questions || [];
+
+            const rows = qs.map(q => {
+                const ans = result.answers?.[q.id] || {};
+                const selected = ans.selectedAnswer;
+                const correct = q.correctAnswer;
+                const isCorrect = selected && selected === correct;
+                const isWrong = selected && selected !== correct;
+                const isSkip = !selected;
+                const rowClass = isCorrect ? 'correct' : isWrong ? 'wrong' : 'skipped';
+                const mark = isCorrect ? '<span class="ans-mark-correct">✅</span>' : isWrong ? '<span class="ans-mark-wrong">❌</span>' : '<span class="ans-mark-skip">⬜</span>';
+                const marks = isCorrect ? '+5' : isWrong ? '−1' : '0';
+                const marksClass = isCorrect ? 'score-pos' : isWrong ? 'score-neg' : 'score-zero';
+                const qText = q.questionText.length > 70 ? q.questionText.slice(0, 70) + '…' : q.questionText;
+                const time = ans.timeSpent ? formatTime(ans.timeSpent).slice(3) : '—';
+
+                return `<tr class="${rowClass}" data-type="${isCorrect ? 'correct' : isWrong ? 'wrong' : 'skipped'}">
+        <td style="font-weight:700;">${q.questionNumber}</td>
+        <td><div>${qText}</div>${q.explanation ? `<div class="explanation-text">💡 ${q.explanation}</div>` : ''}</td>
+        <td style="font-weight:700;color:${isWrong ? '#C62828' : '#424242'}">${selected ? `${selected}) ${q.options[selected]?.slice(0, 20) || ''}...` : '—'}</td>
+        <td style="font-weight:700;color:#2E7D32;">${correct}) ${q.options[correct]?.slice(0, 20) || ''}...</td>
+        <td style="text-align:center;">${mark}</td>
+        <td style="text-align:center;"><span class="score-chip-small ${marksClass}">${marks}</span></td>
+        <td style="text-align:center;font-family:var(--font-mono);font-size:11px;">${time}</td>
+      </tr>`;
+            });
+
+            tbody.innerHTML = rows.join('');
+        }
+
+        function filterAnswers(type, btn) {
+            currentFilter = type;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('#answerTableBody tr').forEach(row => {
+                const rtype = row.getAttribute('data-type');
+                row.style.display = (type === 'all' || rtype === type) ? '' : 'none';
+            });
+        }
+
+        // ─── TABS ─────────────────────────────────────────────────────────────────
+        function showTab(tab) {
+            ['charts', 'analysis', 'answers'].forEach(t => {
+                document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`).classList.toggle('active', t === tab);
+                document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}Content`).classList.toggle('active', t === tab);
+            });
+            if (tab === 'analysis') {
+                generateAIAnalysis();
+            }
+        }
+
+        // ─── REATTEMPT ─────────────────────────────────────────────────────────────
+        function reattempt() {
+            Store.set('activeTestId', result.testId);
+            Store.set('examStartFresh', true);
+            window.location.href = 'exam.html';
+        }
+
+        // ─── PDF DOWNLOAD ─────────────────────────────────────────────────────────
+        function downloadPDF() {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                const max = Math.min((result.questions?.length || 50), 40) * 5;
+                const acc = result.attempted ? Math.round((result.correct / result.attempted) * 100) : 0;
+
+                // Header
+                doc.setFillColor(0, 48, 135);
+                doc.rect(0, 0, 210, 30, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(16); doc.setFont('helvetica', 'bold');
+                doc.text('CUET (UG) 2025 — Mock Test Score Card', 14, 14);
+                doc.setFontSize(9); doc.setFont('helvetica', 'normal');
+                doc.text('UNOFFICIAL PRACTICE REPORT — NOT AN NTA DOCUMENT', 14, 22);
+
+                // Disclaimer watermark
+                doc.setTextColor(200, 200, 200);
+                doc.setFontSize(38); doc.setFont('helvetica', 'bold');
+                doc.saveGraphicsState();
+                doc.setGState(new doc.GState({ opacity: 0.08 }));
+                doc.text('UNOFFICIAL', 30, 160, { angle: 45 });
+                doc.restoreGraphicsState();
+
+                // Candidate details
+                doc.setTextColor(30, 30, 30);
+                doc.setFontSize(11); doc.setFont('helvetica', 'bold');
+                doc.text('Candidate Details', 14, 42);
+                doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+                doc.text(`Name:       ${result.userName}`, 14, 50);
+                doc.text(`Roll No:    ${result.userId}`, 14, 57);
+                doc.text(`Test:       ${result.testTitle}`, 14, 64);
+                doc.text(`Date:       ${formatDateTimeIN(result.calculatedAt)}`, 14, 71);
+                doc.text(`Attempt #:  ${result.attemptNumber || 1}`, 14, 78);
+
+                // Score box
+                doc.setFillColor(238, 242, 255);
+                doc.rect(14, 86, 182, 50, 'F');
+                doc.setFontSize(24); doc.setFont('helvetica', 'bold');
+                doc.setTextColor(0, 48, 135);
+                doc.text(`${result.netScore} / ${max}`, 14, 105);
+                doc.setFontSize(12);
+                doc.text('NET SCORE', 14, 113);
+                doc.setFontSize(10); doc.setFont('helvetica', 'normal');
+                doc.setTextColor(30, 30, 30);
+                doc.text(`Correct: ${result.correct} (+${result.rawScore})`, 100, 97);
+                doc.text(`Incorrect: ${result.incorrect} (−${result.negativeMarks})`, 100, 104);
+                doc.text(`Skipped: ${result.unattempted} (0)`, 100, 111);
+                doc.text(`Accuracy: ${acc}%`, 100, 118);
+                doc.text(`Percentile: ${result.percentile}%`, 100, 125);
+
+                // Footer
+                doc.setFillColor(26, 26, 46);
+                doc.rect(0, 277, 210, 20, 'F');
+                doc.setTextColor(150, 150, 150); doc.setFontSize(8);
+                doc.text('UNOFFICIAL MOCK TEST PLATFORM — Not affiliated with NTA. For official CUET: cuet.nta.nic.in | Support: +91 9556436685', 14, 285);
+                doc.text(`Generated: ${new Date().toLocaleString('en-IN')}`, 14, 290);
+
+                doc.save(`CUET_TEST_${result.userId}_Attempt${result.attemptNumber}.pdf`);
+                showToast('✅ PDF downloaded successfully!', 'success');
+
+                // --- NEW: SECOND PDF FOR DETAILED Q&A ---
+                setTimeout(() => {
+                    if (confirm('Do you want to download the Detailed Answer Key (Questions + Answers)?')) {
+                        const qaDoc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+                        qaDoc.setFillColor(0, 48, 135);
+                        qaDoc.rect(0, 0, 210, 25, 'F');
+                        qaDoc.setTextColor(255, 255, 255);
+                        qaDoc.setFontSize(14); qaDoc.setFont('helvetica', 'bold');
+                        qaDoc.text(`Detailed Answer Key — ${result.testTitle}`, 14, 12);
+                        qaDoc.setFontSize(9); qaDoc.setFont('helvetica', 'normal');
+                        qaDoc.text(`Candidate: ${result.userName} | Roll: ${result.userId}`, 14, 18);
+
+                        let y = 35;
+                        result.questions.forEach((q, idx) => {
+                            const ans = result.answers?.[q.id] || {};
+                            const selected = ans.selectedAnswer || 'SKIPPED';
+                            const correct = q.correctAnswer;
+                            const isCorrect = selected === correct;
+
+                            if (y > 270) { qaDoc.addPage(); y = 20; }
+
+                            qaDoc.setFontSize(10); qaDoc.setFont('helvetica', 'bold');
+                            qaDoc.setTextColor(0, 0, 0);
+                            qaDoc.text(`${idx + 1}. ${q.questionText.slice(0, 90)}${q.questionText.length > 90 ? '...' : ''}`, 14, y);
+                            y += 6;
+
+                            qaDoc.setFont('helvetica', 'normal');
+                            qaDoc.setTextColor(isCorrect ? 34 : selected === 'SKIPPED' ? 100 : 183, isCorrect ? 139 : 100, isCorrect ? 34 : 100);
+                            qaDoc.text(`Your Answer: ${selected}) ${q.options[selected] || '—'}`, 18, y);
+                            y += 5;
+
+                            qaDoc.setTextColor(34, 139, 34);
+                            qaDoc.text(`Correct Answer: ${correct}) ${q.options[correct]}`, 18, y);
+                            y += 10;
+                        });
+
+                        qaDoc.save(`CUET_Detailed_QA_${result.userId}.pdf`);
+                    }
+                }, 500);
+
+            } catch (e) {
+                showToast('⚠️ PDF generation failed. Please try again.', 'error');
+            }
+        }
+
+        // ─── INIT ─────────────────────────────────────────────────────────────────
+        if (result) {
+            populateScoreCard();
+
+            // Phase 8: Push to Live Global Leaderboard (Firebase)
+            if (window.firebaseDB && user) {
+                const scoreData = {
+                    sessionId: result.sessionId,
+                    userId: user.rollNumber,
+                    userName: user.name,
+                    testId: result.testId,
+                    testTitle: (TEST_LIST.find(t => t.id === result.testId))?.title || 'Unknown',
+                    netScore: result.netScore,
+                    accuracy: Math.round((result.correct / (result.correct + result.incorrect || 1)) * 100),
+                    timestamp: nowISO()
+                };
+
+                window.firebaseDB.collection('scores').doc(result.sessionId).set(scoreData, { merge: true })
+                    .then(() => console.log('✅ Score synced to Live Leaderboard.'))
+                    .catch(err => console.error('❌ Score sync failed:', err));
+            }
+            buildCharts();
+            buildAnswerTable();
+        } else {
+            document.body.innerHTML = `
+                <div style="text-align:center;padding:100px;">
+                    <h2>No Result Found</h2>
+                    <p>CUET TEST</p>
+                </div>
+            `;
+            setTimeout(() => window.location.href = 'dashboard.html', 2000);
+        }
+    </script>
+</body>
+
+</html>
+```
